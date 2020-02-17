@@ -211,7 +211,7 @@ public class CLI {
 			for (Computer c : list) {
 				afficher(c);
 			}
-			afficher("appuyer sur une touche");
+			afficher("appuyer sur [Entrée]");
 			sc.nextLine();
 			afficher("----------------------------------");
 			currentRow += 20;
