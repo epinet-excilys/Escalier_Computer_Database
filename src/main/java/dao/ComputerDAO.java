@@ -105,7 +105,7 @@ public final class ComputerDAO {
 
 	public Optional<Computer> find(int idSearch) throws SQLException {
 
-		Computer computer = new Computer();
+		Optional<Computer> computer = Optional.empty();
 
 		try (Connection connect = ConnexionSQL.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getStatement);) {
@@ -124,12 +124,12 @@ public final class ComputerDAO {
 			result.close();
 		}
 
-		return Optional.ofNullable(computer);
+		return computer;
 	}
 
-	public Optional<ArrayList<Computer>> findAll() throws SQLException {
+	public ArrayList<Computer> findAll() throws SQLException {
 
-		ArrayList<Computer> list = new ArrayList<Computer>();
+		ArrayList<Computer> arrayList = new ArrayList<Computer>();
 		Computer computer;
 
 		try (Connection connect = ConnexionSQL.getConn();
@@ -137,8 +137,8 @@ public final class ComputerDAO {
 
 			result = stmt.executeQuery();
 			while (result.next()) {
-				computer = ComputerMapper.getInstance().getComputerFromResultSet(result);
-				list.add(computer);
+				computer = ComputerMapper.getInstance().getComputerFromResultSet(result).get();
+				arrayList.add(computer);
 			}
 
 		} catch (SQLException e) {
@@ -148,12 +148,12 @@ public final class ComputerDAO {
 
 		}
 
-		return Optional.ofNullable(list);
+		return arrayList;
 	}
 
-	public Optional<ArrayList<Computer>> findAllPaginate(int ligneDebutOffSet, int taillePage) throws SQLException {
+	public ArrayList<Computer> findAllPaginate(int ligneDebutOffSet, int taillePage) throws SQLException {
 
-		ArrayList<Computer> list = new ArrayList<Computer>();
+		ArrayList<Computer> arrayList = new ArrayList<Computer>();
 		Computer computer;
 
 		try (Connection connect = ConnexionSQL.getConn();
@@ -162,8 +162,8 @@ public final class ComputerDAO {
 			stmt.setInt(2, taillePage);
 			result = stmt.executeQuery();
 			while (result.next()) {
-				computer = ComputerMapper.getInstance().getComputerFromResultSet(result);
-				list.add(computer);
+				computer = ComputerMapper.getInstance().getComputerFromResultSet(result).get();
+				arrayList.add(computer);
 			}
 
 		} catch (SQLException e) {
@@ -173,7 +173,7 @@ public final class ComputerDAO {
 
 		}
 
-		return Optional.ofNullable(list);
+		return arrayList;
 	}
 
 	public int getNbRow() throws SQLException {

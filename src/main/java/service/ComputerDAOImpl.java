@@ -86,31 +86,31 @@ public final class ComputerDAOImpl {
 		return Optional.ofNullable(comp);
 	}
 
-	public Optional<List<Computer>> getAllComput() {
-		List<Computer> list = null;
+	public ArrayList<Computer> getAllComput() {
+		ArrayList<Computer> arrayList = null;
 		try {
 
-			list = ComputerDAO.getInstance().findAll().get();
+			arrayList = ComputerDAO.getInstance().findAll();
 
 		} catch (SQLException e) {
 			// TODO Log
 		}
 
-		return Optional.ofNullable(list);
+		return arrayList;
 
 	}
 
-	public Optional<List<Computer>> getAllPaginateComput(int ligneDebutOffSet, int taillePage) {
-		List<Computer> list = null;
+	public ArrayList<Computer> getAllPaginateComput(int ligneDebutOffSet, int taillePage) {
+		ArrayList<Computer> arrayList = null;
 		try {
 
-			list = ComputerDAO.getInstance().findAllPaginate(ligneDebutOffSet, taillePage).get();
+			arrayList = ComputerDAO.getInstance().findAllPaginate(ligneDebutOffSet, taillePage);
 
 		} catch (SQLException e) {
 			// TODO log
 		}
 
-		return Optional.ofNullable(list);
+		return arrayList;
 
 	}
 

@@ -1,9 +1,11 @@
 package client;
 
 import java.util.List;
+import java.util.Optional;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import model.Company;
 import model.Computer;
 import service.ComputerDAOImpl;
 import service.CompanyDAOImpl;
@@ -58,9 +60,11 @@ public class CLI {
 				break;
 			case UPDATE:
 				afficher("modif comput");
+				modifComput();
 				break;
 			case DISPLAYCOMPANY:
 				afficher("affich company");
+				affiAllCompan();
 				break;
 			case EXIT:
 				afficher("Quitter le prog");
@@ -83,11 +87,11 @@ public class CLI {
 
 		int i = (ComputerDAOImpl.getInstance().getNbRows() + 1);
 		String passage_1 = "" + i + "";
-		
+
 		tabRep[0] = (passage_1);
 
 		afficher("Saisir le nom");
-		tabRep[1] = "Nom";// (sc.nextLine());
+		tabRep[1] = (sc.nextLine());
 
 		afficher("Saisir la Date d'introduction sur le marché (AAAA-MM-dd)");
 		tabRep[2] = (sc.nextLine());
@@ -97,12 +101,12 @@ public class CLI {
 
 		afficher("Saisir l'id de la companie ");
 		tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
-		
+
 		Computer computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
+		tabRep = null;
 		
 		afficher(computer);
-		
-		
+
 		try {
 			ComputerDAO.getInstance().create(computer);
 		} catch (SQLException e) {
@@ -111,6 +115,49 @@ public class CLI {
 	}
 
 	public void modifComput() {
+		int commandeId = scannerIdComput("afficher");
+
+		if (commandeId != -1) {
+			Optional<Computer> comp = ComputerDAOImpl.getInstance().find(commandeId);
+			if (comp.isPresent()) {
+				
+				tabRep[0] = String.valueOf(comp.get().getId());
+				
+				afficher("Nom Actuel : " +  comp.get().getName());
+				afficher("Saisir le nouveau nom");
+				tabRep[1] = (sc.nextLine());
+
+				afficher("Intro Date Actuel : " +  comp.get().getIntroDate());
+				afficher("Saisir la Date d'introduction sur le marché (AAAA-MM-dd)");
+				tabRep[2] = (sc.nextLine());
+
+				afficher("Disco Date Actuel : " +  comp.get().getDiscoDate());
+				afficher("Saisir la Date de retrait du le marché (AAAA-MM-dd)");
+				tabRep[3] = (sc.nextLine());
+
+				afficher("Id companie Actuel : " +  comp.get().getCompany().getId());
+				afficher("Saisir l'id de la companie ");
+				tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
+				
+				Computer computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
+				tabRep = null;
+				
+				afficher(computer);
+
+				try {
+					ComputerDAO.getInstance().update(computer);
+				} catch (SQLException e) {
+					// TODO Log
+				}
+				
+				
+				
+			} else {
+				afficher("Pas de Correspondance en Base");
+			}
+
+		}
+		
 
 	}
 
@@ -119,7 +166,7 @@ public class CLI {
 		int commandeId = scannerIdComput("supprimer");
 
 		if (commandeId != -1) {
-			
+
 			Computer comp = ComputerDAOImpl.getInstance().find(commandeId).get();
 			afficher(comp);
 
@@ -133,18 +180,21 @@ public class CLI {
 	public void affiComput() {
 
 		int commandeId = scannerIdComput("afficher");
-		afficher(commandeId);
+
 		if (commandeId != -1) {
-			Computer comp = ComputerDAOImpl.getInstance().find(commandeId).get();
-			afficher(comp);
-		} else {
-			afficher("Pas de Correspondance en Base");
+			Optional<Computer> comp = ComputerDAOImpl.getInstance().find(commandeId);
+			if (comp.isPresent()) {
+				afficher(comp);
+			} else {
+				afficher("Pas de Correspondance en Base");
+			}
+
 		}
 
 	}
 
 	public void affiAllComput() {
-		List <Computer> list = ComputerDAOImpl.getInstance().getAllComput().get();
+		List<Computer> list = ComputerDAOImpl.getInstance().getAllComput();
 
 		for (Computer c : list) {
 			afficher(c);
@@ -157,11 +207,13 @@ public class CLI {
 		int currentRow = 0;
 
 		do {
-			List<Computer> list = ComputerDAOImpl.getInstance().getAllPaginateComput(currentRow, TAILLE_PAGE).get();
+			List<Computer> list = ComputerDAOImpl.getInstance().getAllPaginateComput(currentRow, TAILLE_PAGE);
 			for (Computer c : list) {
 				afficher(c);
 			}
-			afficher("----------------");
+			afficher("appuyer sur une touche");
+			sc.nextLine();
+			afficher("----------------------------------");
 			currentRow += 20;
 
 		} while (currentRow < nbTotalRows);
@@ -171,15 +223,16 @@ public class CLI {
 	// Methode
 	// Compan-----------------------------------------------------------------------------------
 
-	public void affiCompan() {
-
-	}
-
 	public void affiAllCompan() {
+		List<Company> list = CompanyDAOImpl.getInstance().getAllComput().get();
 
+		for (Company c : list) {
+			afficher(c);
+		}
 	}
 
-	//--------------- Methode Console-----------------------------------------------------------
+	// Methode
+	// Console-----------------------------------------------------------
 
 	public void afficher(Object s) {
 		System.out.println(s);
@@ -222,7 +275,7 @@ public class CLI {
 		int repEnInt = -1;
 		String rep = "";
 		if (valMaxId != -1) {
-			afficher("Entrez l'ID de la machine que vous voulez " + personnalisation );
+			afficher("Entrez l'ID de la machine que vous voulez " + personnalisation);
 			do {
 
 				try {
@@ -242,36 +295,7 @@ public class CLI {
 
 	}
 
-	public String scannerString(String personnalisation) {
-		String rep = "non_valable";
-
-		return rep;
-	}
-	
-	
-	// TODO REFAIRE CETTE FONCTION
-	/*
-	 * public boolean scannerSur() {
-	 * 
-	 * String oui = "OUI"; String non = "non"; String rep = "vide";
-	 * 
-	 * do { afficher("Etes vous sur ? [" + oui + ":" + non + "]");
-	 * 
-	 * try { rep = sc.nextLine();
-	 * 
-	 * } catch (Exception e) {
-	 * afficher("Veuillez entrer une valeurs compréhensive pour le programme"); }
-	 * 
-	 * } while (!rep.contentEquals(oui) || !rep.contentEquals(non));
-	 * 
-	 * if (rep.contentEquals(oui)) { return true; } else if (rep.contentEquals(non))
-	 * { return false; } else { afficher("Erreur de saisi"); return false; }
-	 * 
-	 * }
-	 */
-
-
-	//TODO MODFIER
+	// TODO MODFIER
 	public int scannerIdCompan(String personnalisation) {
 		int valMaxId = CompanyDAOImpl.getInstance().getNbRows();
 		int repEnInt = -1;
@@ -289,7 +313,7 @@ public class CLI {
 					repEnInt = -1;
 				}
 
-			} while (repEnInt == -1 );
+			} while (repEnInt == -1);
 		}
 
 		return repEnInt;

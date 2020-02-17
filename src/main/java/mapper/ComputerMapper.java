@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import dao.CompanyDAO;
 import model.Company;
@@ -34,9 +35,8 @@ public final class ComputerMapper {
 
 	}
 
-	public Computer getComputerFromResultSet(ResultSet resultSet) throws SQLException {
-		
-		
+	public Optional<Computer> getComputerFromResultSet(ResultSet resultSet) throws SQLException {
+
 		int id = resultSet.getInt("id");
 		String name = resultSet.getString("name");
 		//
@@ -47,17 +47,14 @@ public final class ComputerMapper {
 				? resultSet.getTimestamp("discontinued").toLocalDateTime().toLocalDate()
 				: null);
 
-		
 		int idComp = (resultSet.getInt("company_id"));
 		String nameComp = (resultSet.getString("company.name"));
-		
+
 		Company company = new Company.CompanyBuilder().setIdBuild(idComp).setNameBuild(nameComp).build();
-		
-	
-		
+
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(id).setNameBuild(name)
 				.setIntroDateBuild(introDate).setDiscoDateBuild(discoDate).setIdCompagnyBuild(company).build();
-		return computer;
+		return Optional.ofNullable(computer);
 	}
 
 	public Computer fromStringToComput(String[] resultTab) {
@@ -66,22 +63,20 @@ public final class ComputerMapper {
 		LocalDate introDate = fromStringToLocalDate(resultTab[2]);
 		LocalDate discoDate = fromStringToLocalDate(resultTab[3]);
 		int idComp = Integer.parseInt(resultTab[4]);
-		
-		//TODO REVOIR CE PASSAGE
-		Company company= null;
+
+		// TODO REVOIR CE PASSAGE
+		Company company = null;
 		try {
 			company = CompanyDAO.getInstance().find(idComp).get();
 		} catch (SQLException e) {
 			// TODO log
 		}
-		
+
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(id).setNameBuild(name)
 				.setIntroDateBuild(introDate).setDiscoDateBuild(discoDate).setIdCompagnyBuild(company).build();
 
 		return computer;
 	}
-
-	// TODO : Ne marche pas
 
 	public LocalDate fromStringToLocalDate(String s) {
 
