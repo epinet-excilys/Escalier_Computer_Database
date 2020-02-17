@@ -42,7 +42,6 @@ public class CLI {
 
 			case DISPLAYALLCOMPUTER:
 				afficher("liste comput");
-				// affiAllComput();
 				affiAllPaginateComput();
 				break;
 			case DISPLAYCOMPUTER:

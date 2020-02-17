@@ -15,8 +15,8 @@ import model.*;
 public final class CompanyDAO {
 
 	private static volatile CompanyDAO instance = null;
-	private final String getStatement = "select id, name from company where id=?";
-	private final String getAllStatement = "select company.id, company.name from company";
+	private final String getStatement = "SELECT company.id, company.name FROM company where id=?";
+	private final String getAllStatement = "SELECT company.id, company.name FROM company";
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM company;";
 
 	private ResultSet result;

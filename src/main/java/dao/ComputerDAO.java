@@ -25,8 +25,8 @@ public final class ComputerDAO {
 	//
 	private final String getStatement = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
 			+ " FROM computer  LEFT JOIN company ON company_id = company.id WHERE computer.id = ?;";
-	private final String getAllStatement = "SELECT * FROM computer LEFT JOIN company ON company_id = company.id ;";
-	private final String getAllPaginateStatement = "SELECT * FROM computer LEFT JOIN company ON company_id = company.id LIMIT ?, ?;";
+	private final String getAllStatement = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id ;";
+	private final String getAllPaginateStatement = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id LIMIT ?, ?;";
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM computer;";
 
 	private ResultSet result;
