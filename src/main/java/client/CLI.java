@@ -27,7 +27,7 @@ public class CLI {
 	public void demonstration() {
 		flagContinue = true;
 		int commande = 0;
-		afficher("Version t+3 de la BDD - acces console");
+		afficher("Version t+10 de CDB - acces console");
 
 		while (flagContinue) {
 			afficher("Saisir : 0 pour afficher la liste Computer");

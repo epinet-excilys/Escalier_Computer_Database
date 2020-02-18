@@ -1,15 +1,21 @@
 package client;
 
-
+import exception.Logging;
 
 public class Application {
-
+	
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		
+//		CLI cli = new CLI();
+//		
+//		cli.demonstration();
+		Logging.display("Mon cul sur la commode");
+	      
 
-		CLI cli = new CLI();
-
-		cli.demonstration();
 
 		// GetAll();
 		/*
