@@ -10,10 +10,9 @@ public class Application {
 		// TODO Auto-generated method stub
 		
 		
-//		CLI cli = new CLI();
-//		
-//		cli.demonstration();
-		Logging.display("Mon cul sur la commode");
+		CLI cli = new CLI();
+		
+		cli.demonstration();
 	      
 
 

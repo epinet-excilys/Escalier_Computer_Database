@@ -6,10 +6,17 @@ import java.util.List;
 import java.util.Optional;
 
 import dao.ComputerDAO;
+import exception.Logging;
 import model.Computer;
 
 public final class ComputerDAOImpl {
 
+	private static final String bddAccessLog = "Impossible de recuperer le computer dans la BDD";
+	private static final String bddAddLog = "Impossible d'ajouter le computer en BDD";
+	private static final String bddModLog = "Impossible de modifier le computer en BDD";
+	private static final String bddSupprLog = "Impossible de supprimer le computer en BDD";
+	private static final String bddNotFoundLog = "Il n'existe pas de Computer en BDD correspondant";
+	
 	private static volatile ComputerDAOImpl instance = null;
 
 	private ComputerDAOImpl() {
@@ -35,14 +42,14 @@ public final class ComputerDAOImpl {
 		try {
 			comp = ComputerDAO.getInstance().find(obj.getId()).get();
 		} catch (SQLException e) {
-			// TODO log
+			Logging.displayError(bddAccessLog);
 		}
 
 		if (comp != null) {
 			try {
 				ComputerDAO.getInstance().update(obj);
 			} catch (SQLException e) {
-				// TODO log
+				Logging.displayError(bddModLog);
 			}
 		}
 	}
@@ -52,14 +59,14 @@ public final class ComputerDAOImpl {
 		try {
 			comp = ComputerDAO.getInstance().find(obj.getId()).get();
 		} catch (SQLException e) {
-			//TODO log
+			Logging.displayInfo(bddNotFoundLog);
 		}
 
 		if (comp == null) {
 			try {
 				ComputerDAO.getInstance().create(obj);
 			} catch (SQLException e) {
-				// TODO log
+				Logging.displayError(bddAddLog);
 			}
 		}
 	}
@@ -68,7 +75,7 @@ public final class ComputerDAOImpl {
 			try {
 				ComputerDAO.getInstance().delete(obj.getId());
 			} catch (SQLException e) {
-				// TODO log
+				Logging.displayError(bddSupprLog);
 			}
 
 	}
@@ -80,7 +87,7 @@ public final class ComputerDAOImpl {
 		try {
 			comp = ComputerDAO.getInstance().find(i).get();
 		} catch (SQLException e) {
-			// TODO Log
+			Logging.displayError(bddNotFoundLog);
 		}
 
 		return Optional.ofNullable(comp);
@@ -93,7 +100,7 @@ public final class ComputerDAOImpl {
 			arrayList = ComputerDAO.getInstance().findAll();
 
 		} catch (SQLException e) {
-			// TODO Log
+			Logging.displayError(bddAccessLog);
 		}
 
 		return arrayList;
@@ -107,7 +114,7 @@ public final class ComputerDAOImpl {
 			arrayList = ComputerDAO.getInstance().findAllPaginate(ligneDebutOffSet, taillePage);
 
 		} catch (SQLException e) {
-			// TODO log
+			Logging.displayError(bddAccessLog);
 		}
 
 		return arrayList;
@@ -119,7 +126,7 @@ public final class ComputerDAOImpl {
 		try {
 			nbRow = ComputerDAO.getInstance().getNbRow();
 		} catch (SQLException e) {
-			// TODO Log
+			Logging.displayError(bddAccessLog);
 		}
 
 		return nbRow;

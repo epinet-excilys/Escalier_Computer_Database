@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
+
+import exception.Logging;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 
@@ -30,6 +33,9 @@ public final class ComputerDAO {
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM computer;";
 
 	private ResultSet result;
+	
+	private static final String bddAccessLog = "Impossible de se connecter à la  BDD niveau DAO";
+
 
 	private ComputerDAO() {
 		super();
@@ -67,7 +73,7 @@ public final class ComputerDAO {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		}
 	}
 
@@ -79,7 +85,7 @@ public final class ComputerDAO {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		}
 	}
 
@@ -98,7 +104,7 @@ public final class ComputerDAO {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		}
 
 	}
@@ -119,7 +125,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		} finally {
 			result.close();
 		}
@@ -142,7 +148,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		} finally {
 			result.close();
 
@@ -167,7 +173,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		} finally {
 			result.close();
 
@@ -189,7 +195,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		} finally {
 			result.close();
 		}

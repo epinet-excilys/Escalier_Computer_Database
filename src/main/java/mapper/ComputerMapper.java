@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 import dao.CompanyDAO;
+import exception.Logging;
 import model.Company;
 import model.Computer;
 
 public final class ComputerMapper {
 
 	private static volatile ComputerMapper instance = null;
+	private static final String bddAccessLog = "Impossible de recuperer le computer dans la BDD";
 
 	private ComputerMapper() {
 		super();
@@ -69,7 +71,7 @@ public final class ComputerMapper {
 		try {
 			company = CompanyDAO.getInstance().find(idComp).get();
 		} catch (SQLException e) {
-			// TODO log
+			Logging.displayError(bddAccessLog);
 		}
 
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(id).setNameBuild(name)

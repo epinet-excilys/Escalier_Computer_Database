@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
+
+import exception.Logging;
+
 import java.sql.PreparedStatement;
 
 import mapper.CompanyMapper;
@@ -20,6 +23,8 @@ public final class CompanyDAO {
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM company;";
 
 	private ResultSet result;
+	
+	private final static String bddAccessLog = "Impossible d'acceder à la BDD niveau DAO";
 
 	private CompanyDAO() {
 		super();
@@ -63,7 +68,7 @@ public final class CompanyDAO {
 				company = CompanyMapper.getInstance().getCompanyFromResultSet(result);
 			}
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		} finally {
 			result.close();
 		}
@@ -88,7 +93,7 @@ public final class CompanyDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO REMPLIR AVEC LOG
+			Logging.displayError(bddAccessLog);
 		} finally {
 			result.close();
 		}
@@ -110,7 +115,7 @@ public final class CompanyDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO remplir avec les Logs
+			Logging.displayError(bddAccessLog);
 		} finally {
 			result.close();
 		}

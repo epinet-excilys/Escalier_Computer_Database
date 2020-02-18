@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import dao.CompanyDAO;
+import exception.Logging;
 import model.Company;
 
 public final class CompanyDAOImpl {
 	
 private static volatile CompanyDAOImpl instance = null;
+private static final String bddAccessLog = "Impossible de recuperer la Company";
 	
 	
 	private CompanyDAOImpl() {
@@ -32,23 +34,12 @@ private static volatile CompanyDAOImpl instance = null;
 
 	public Optional<Company> find(int i) {
 		Company company = null;
-		int a = -1;
 
-		try {
-			a = CompanyDAO.getInstance().getNbRow();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		if ((i <= a) && (a != -1)) {
 			try {
 				company = CompanyDAO.getInstance().find(i).get();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Logging.displayError(bddAccessLog);
 			}
-		}
 
 		return Optional.ofNullable(company);
 	}
@@ -60,8 +51,7 @@ private static volatile CompanyDAOImpl instance = null;
 			list = CompanyDAO.getInstance().findAll().get();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logging.displayError(bddAccessLog);
 		}
 
 		return Optional.ofNullable(list);
@@ -73,8 +63,7 @@ private static volatile CompanyDAOImpl instance = null;
 		try {
 			nbRow = CompanyDAO.getInstance().getNbRow();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logging.displayError(bddAccessLog);
 		}
 		
 		return nbRow;

@@ -10,7 +10,8 @@ import model.Computer;
 import service.ComputerDAOImpl;
 import service.CompanyDAOImpl;
 import mapper.ComputerMapper;
-import dao.ComputerDAO;;
+import dao.ComputerDAO;
+import exception.Logging;;
 
 public class CLI {
 
@@ -18,6 +19,8 @@ public class CLI {
 	private String[] tabRep = { "", "", "", "", "" };
 	private boolean flagContinue;
 	private final int TAILLE_PAGE = 20;
+	private final String bddAddLog = "Impossible d'ajouter le computer en BDD";
+	private final String bddModLog = "Impossible de modifier le computer en BDD";
 
 	public CLI() {
 		sc = new Scanner(System.in);
@@ -110,7 +113,7 @@ public class CLI {
 		try {
 			ComputerDAO.getInstance().create(computer);
 		} catch (SQLException e) {
-			// TODO Log
+			Logging.displayError(bddAddLog);
 		}
 	}
 
@@ -147,7 +150,7 @@ public class CLI {
 				try {
 					ComputerDAO.getInstance().update(computer);
 				} catch (SQLException e) {
-					// TODO Log
+					Logging.displayError(bddModLog);
 				}
 				
 				
