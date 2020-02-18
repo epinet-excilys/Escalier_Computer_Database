@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ public final class ComputerMapper {
 
 	private static volatile ComputerMapper instance = null;
 	private static final String bddAccessLog = "Impossible de recuperer le computer dans la BDD";
+	private static final String ERREUR_DE_PARSING_DATE = "Impossible de Parser l'entrée en Date";
 
 	private ComputerMapper() {
 		super();
@@ -59,7 +61,7 @@ public final class ComputerMapper {
 		return Optional.ofNullable(computer);
 	}
 
-	public Computer fromStringToComput(String[] resultTab) {
+	public Computer fromStringToComput(String[] resultTab) throws ParseException, SQLException {
 		int id = Integer.parseInt(resultTab[0]);
 		String name = resultTab[1];
 		LocalDate introDate = fromStringToLocalDate(resultTab[2]);
@@ -68,11 +70,7 @@ public final class ComputerMapper {
 
 		// TODO REVOIR CE PASSAGE
 		Company company = null;
-		try {
-			company = CompanyDAO.getInstance().find(idComp).get();
-		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
-		}
+		company = CompanyDAO.getInstance().find(idComp).get();
 
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(id).setNameBuild(name)
 				.setIntroDateBuild(introDate).setDiscoDateBuild(discoDate).setIdCompagnyBuild(company).build();
@@ -80,11 +78,13 @@ public final class ComputerMapper {
 		return computer;
 	}
 
-	public LocalDate fromStringToLocalDate(String s) {
+	public LocalDate fromStringToLocalDate(String s) throws DateTimeParseException {
 
-		if (!s.isEmpty()) {
+		if ((s != null )&& !s.isEmpty()) {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate dateTime = LocalDate.parse(s, formatter);
+			LocalDate dateTime;
+			dateTime = LocalDate.parse(s, formatter);
+
 			return dateTime;
 		} else {
 			return null;

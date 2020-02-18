@@ -3,6 +3,7 @@ package client;
 import java.util.List;
 import java.util.Optional;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Scanner;
 
 import model.Company;
@@ -19,8 +20,11 @@ public class CLI {
 	private String[] tabRep = { "", "", "", "", "" };
 	private boolean flagContinue;
 	private final int TAILLE_PAGE = 20;
-	private final String bddAddLog = "Impossible d'ajouter le computer en BDD";
-	private final String bddModLog = "Impossible de modifier le computer en BDD";
+	private final String BDD_ADD_LOG = "Impossible d'ajouter le computer en BDD";
+	private final String BDD_MOD_LOG = "Impossible de modifier le computer en BDD";
+	private final String PARSE_LOG = "Impossible de Parser la date fournit";
+	private final String SQL_LOG = "SQL erreur";
+	
 
 	public CLI() {
 		sc = new Scanner(System.in);
@@ -105,15 +109,22 @@ public class CLI {
 		afficher("Saisir l'id de la companie ");
 		tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
 
-		Computer computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
+		Computer computer = null;
+		try {
+			computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
+		} catch (ParseException parseEx) {
+			Logging.displayError(PARSE_LOG);
+		} catch (SQLException sqlEx) {
+			Logging.displayError(SQL_LOG);
+		}
 		tabRep = null;
-		
+
 		afficher(computer);
 
 		try {
 			ComputerDAO.getInstance().create(computer);
 		} catch (SQLException e) {
-			Logging.displayError(bddAddLog);
+			Logging.displayError(BDD_ADD_LOG);
 		}
 	}
 
@@ -123,44 +134,48 @@ public class CLI {
 		if (commandeId != -1) {
 			Optional<Computer> comp = ComputerDAOImpl.getInstance().find(commandeId);
 			if (comp.isPresent()) {
-				
+
 				tabRep[0] = String.valueOf(comp.get().getId());
-				
-				afficher("Nom Actuel : " +  comp.get().getName());
+
+				afficher("Nom Actuel : " + comp.get().getName());
 				afficher("Saisir le nouveau nom");
 				tabRep[1] = (sc.nextLine());
 
-				afficher("Intro Date Actuel : " +  comp.get().getIntroDate());
+				afficher("Intro Date Actuel : " + comp.get().getIntroDate());
 				afficher("Saisir la Date d'introduction sur le marché (AAAA-MM-dd)");
 				tabRep[2] = (sc.nextLine());
 
-				afficher("Disco Date Actuel : " +  comp.get().getDiscoDate());
+				afficher("Disco Date Actuel : " + comp.get().getDiscoDate());
 				afficher("Saisir la Date de retrait du le marché (AAAA-MM-dd)");
 				tabRep[3] = (sc.nextLine());
 
-				afficher("Id companie Actuel : " +  comp.get().getCompany().getId());
+				afficher("Id companie Actuel : " + comp.get().getCompany().getId());
 				afficher("Saisir l'id de la companie ");
 				tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
-				
-				Computer computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
+
+				Computer computer = null;
+				try {
+					computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
+				} catch (ParseException parseEx) {
+					Logging.displayError(PARSE_LOG);
+				} catch (SQLException sqlEx) {
+					Logging.displayError(SQL_LOG);
+				}
 				tabRep = null;
-				
+
 				afficher(computer);
 
 				try {
 					ComputerDAO.getInstance().update(computer);
 				} catch (SQLException e) {
-					Logging.displayError(bddModLog);
+					Logging.displayError(BDD_MOD_LOG);
 				}
-				
-				
-				
+
 			} else {
 				afficher("Pas de Correspondance en Base");
 			}
 
 		}
-		
 
 	}
 
