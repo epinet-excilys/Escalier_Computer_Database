@@ -13,9 +13,7 @@ public class Application {
 		CLI cli = new CLI();
 		
 		cli.demonstration();
-	      
-		Logging.displayError("aaaaaaaaaaaa");
-		Logging.displayInfo("aaaaaaInfo");
+
 		// GetAll();
 		/*
 		 * List<Company> list = null; List<Computer> list2 = null;

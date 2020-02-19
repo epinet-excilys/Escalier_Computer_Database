@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import exception.Logging;
@@ -109,7 +110,7 @@ public final class ComputerDAO {
 
 	}
 
-	public Optional<Computer> find(int idSearch) throws SQLException {
+	public Optional<Computer> find(int idSearch) throws SQLException, NoSuchElementException{
 
 		Optional<Computer> computer = Optional.empty();
 

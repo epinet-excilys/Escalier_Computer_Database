@@ -1,6 +1,7 @@
 package client;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -109,7 +110,7 @@ public class CLI {
 		afficher("Saisir l'id de la companie ");
 		tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
 
-		Computer computer = null;
+		Computer computer = null; 
 		try {
 			computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
 		} catch (ParseException parseEx) {
@@ -337,5 +338,6 @@ public class CLI {
 		return repEnInt;
 
 	}
+	
 
 }

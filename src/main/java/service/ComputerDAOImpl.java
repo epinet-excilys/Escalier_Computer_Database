@@ -3,6 +3,7 @@ package service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import dao.ComputerDAO;
@@ -81,16 +82,16 @@ public final class ComputerDAOImpl {
 	}
 
 	//
-	public Optional<Computer> find(int i) {
-		Computer comp = null;
+	public Optional<Computer> find(int i) throws NoSuchElementException {
+		Optional<Computer> comp = null;
 
 		try {
-			comp = ComputerDAO.getInstance().find(i).get();
+			comp = ComputerDAO.getInstance().find(i);
 		} catch (SQLException e) {
 			Logging.displayError(bddNotFoundLog);
-		}
+		}	
 
-		return Optional.ofNullable(comp);
+		return comp;
 	}
 
 	public ArrayList<Computer> getAllComput() {
