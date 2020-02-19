@@ -34,11 +34,9 @@ public final class ComputerDAO {
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM computer;";
 
 	private ResultSet result;
-	
+
 	private static final String BDD_ACCESS_LOG = "Impossible de se connecter à la  BDD niveau DAO";
-	
-
-
+	private static final String BDD_NULL_OBJECT_LOG = "Tentative de manipulation d'un objet null";
 
 	private ComputerDAO() {
 		super();
@@ -58,61 +56,75 @@ public final class ComputerDAO {
 		return ComputerDAO.instance;
 	}
 
-	public void create(Computer computer) throws SQLException {
+	public int create(Computer computer) throws SQLException {
+		int valueOfPreparedStatement = 0;
 
-		try (Connection connect = ConnexionSQL.getConn();
-				PreparedStatement stmt = connect.prepareStatement(createStatement);) {
-			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2,
-					computer.getIntroDate() != null
-							? Timestamp.valueOf(computer.getIntroDate().atTime(LocalTime.MIDNIGHT))
-							: null);
-			stmt.setTimestamp(3,
-					computer.getDiscoDate() != null
-							? Timestamp.valueOf(computer.getDiscoDate().atTime(LocalTime.MIDNIGHT))
-							: null);
-			stmt.setInt(4, computer.getCompany().getId());
+		if (computer != null) {
+			try (Connection connect = ConnexionSQL.getConn();
+					PreparedStatement stmt = connect.prepareStatement(createStatement);) {
+				stmt.setString(1, computer.getName());
+				stmt.setTimestamp(2,
+						computer.getIntroDate() != null
+								? Timestamp.valueOf(computer.getIntroDate().atTime(LocalTime.MIDNIGHT))
+								: null);
+				stmt.setTimestamp(3,
+						computer.getDiscoDate() != null
+								? Timestamp.valueOf(computer.getDiscoDate().atTime(LocalTime.MIDNIGHT))
+								: null);
+				stmt.setInt(4, computer.getCompany().getId());
 
-			stmt.executeUpdate();
+				valueOfPreparedStatement = stmt.executeUpdate();
 
-		} catch (SQLException e) {
-			Logging.displayError(BDD_ACCESS_LOG);
+			} catch (SQLException e) {
+				Logging.displayError(BDD_ACCESS_LOG);
+			} catch (NullPointerException e) {
+				Logging.displayError(BDD_NULL_OBJECT_LOG);
+			}
 		}
+		return valueOfPreparedStatement;
+
 	}
 
-	public void delete(int idSuppression) throws SQLException {
-
+	public int delete(int idSuppression) throws SQLException {
+		int valueOfPreparedStatement = 0;
 		try (Connection connect = ConnexionSQL.getConn();
 				PreparedStatement stmt = connect.prepareStatement(deleteStatement);) {
 			stmt.setInt(1, idSuppression);
-			stmt.executeUpdate();
+			valueOfPreparedStatement = stmt.executeUpdate();
 
 		} catch (SQLException e) {
 			Logging.displayError(BDD_ACCESS_LOG);
 		}
+		return valueOfPreparedStatement;
 	}
 
-	public void update(Computer computer) throws SQLException {
+	public int update(Computer computer) throws SQLException {
+		int valueOfPreparedStatement = 0;
 
-		try (Connection connect = ConnexionSQL.getConn();
-				PreparedStatement stmt = connect.prepareStatement(updateStatement);) {
+		if (computer != null) {
+			try (Connection connect = ConnexionSQL.getConn();
+					PreparedStatement stmt = connect.prepareStatement(updateStatement);) {
 
-			stmt.setInt(5, computer.getId());
+				stmt.setInt(5, computer.getId());
 
-			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroDate().atTime(LocalTime.MIDNIGHT)));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscoDate().atTime(LocalTime.MIDNIGHT)));
-			stmt.setInt(4, computer.getCompany().getId());
+				stmt.setString(1, computer.getName());
+				stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroDate().atTime(LocalTime.MIDNIGHT)));
+				stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscoDate().atTime(LocalTime.MIDNIGHT)));
+				stmt.setInt(4, computer.getCompany().getId());
 
-			stmt.executeUpdate();
+				valueOfPreparedStatement = stmt.executeUpdate();
 
-		} catch (SQLException e) {
-			Logging.displayError(BDD_ACCESS_LOG);
+			} catch (SQLException e) {
+				Logging.displayError(BDD_ACCESS_LOG);
+			} catch (NullPointerException e) {
+				Logging.displayError(BDD_NULL_OBJECT_LOG);
+			}
 		}
+		return valueOfPreparedStatement;
 
 	}
 
-	public Optional<Computer> find(int idSearch) throws SQLException, NoSuchElementException{
+	public Optional<Computer> find(int idSearch) throws SQLException, NoSuchElementException {
 
 		Optional<Computer> computer = Optional.empty();
 
@@ -120,8 +132,7 @@ public final class ComputerDAO {
 				PreparedStatement stmt = connect.prepareStatement(getStatement);) {
 			stmt.setInt(1, idSearch);
 			result = stmt.executeQuery();
-			
-			
+
 			if (result.first()) {
 				computer = ComputerMapper.getInstance().getComputerFromResultSet(result);
 
@@ -198,7 +209,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			
+
 			Logging.displayError(BDD_ACCESS_LOG);
 		} finally {
 			result.close();

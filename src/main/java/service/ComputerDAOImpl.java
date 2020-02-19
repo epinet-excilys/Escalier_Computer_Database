@@ -38,8 +38,9 @@ public final class ComputerDAOImpl {
 	}
 
 	// TODO A MODIFIER
-	public void update(Computer obj) {
+	public int update(Computer obj) {
 		Computer comp = null;
+		int valueOfUpdate = 0;
 		try {
 			comp = ComputerDAO.getInstance().find(obj.getId()).get();
 		} catch (SQLException e) {
@@ -53,10 +54,12 @@ public final class ComputerDAOImpl {
 				Logging.displayError(bddModLog);
 			}
 		}
+		return valueOfUpdate;
 	}
 
-	public void add(Computer obj) {
+	public int add(Computer obj) {
 		Computer comp = null;
+		int valueOfCreate = 0;
 		try {
 			comp = ComputerDAO.getInstance().find(obj.getId()).get();
 		} catch (SQLException e) {
@@ -65,19 +68,22 @@ public final class ComputerDAOImpl {
 
 		if (comp == null) {
 			try {
-				ComputerDAO.getInstance().create(obj);
+				valueOfCreate = ComputerDAO.getInstance().create(obj);
 			} catch (SQLException e) {
 				Logging.displayError(bddAddLog);
 			}
 		}
+		return valueOfCreate;
 	}
 
-	public void delete(Computer obj) {
+	public int delete(Computer obj) {
+		int valueOfDelete = 0;
 			try {
-				ComputerDAO.getInstance().delete(obj.getId());
+				valueOfDelete = ComputerDAO.getInstance().delete(obj.getId());
 			} catch (SQLException e) {
 				Logging.displayError(bddSupprLog);
 			}
+			return valueOfDelete;
 
 	}
 
