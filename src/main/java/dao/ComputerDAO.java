@@ -35,7 +35,9 @@ public final class ComputerDAO {
 
 	private ResultSet result;
 	
-	private static final String bddAccessLog = "Impossible de se connecter à la  BDD niveau DAO";
+	private static final String BDD_ACCESS_LOG = "Impossible de se connecter à la  BDD niveau DAO";
+	
+
 
 
 	private ComputerDAO() {
@@ -74,7 +76,7 @@ public final class ComputerDAO {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
+			Logging.displayError(BDD_ACCESS_LOG);
 		}
 	}
 
@@ -86,7 +88,7 @@ public final class ComputerDAO {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
+			Logging.displayError(BDD_ACCESS_LOG);
 		}
 	}
 
@@ -105,7 +107,7 @@ public final class ComputerDAO {
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
+			Logging.displayError(BDD_ACCESS_LOG);
 		}
 
 	}
@@ -126,7 +128,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
+			Logging.displayError(BDD_ACCESS_LOG);
 		} finally {
 			result.close();
 		}
@@ -149,7 +151,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
+			Logging.displayError(BDD_ACCESS_LOG);
 		} finally {
 			result.close();
 
@@ -174,7 +176,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
+			Logging.displayError(BDD_ACCESS_LOG);
 		} finally {
 			result.close();
 
@@ -196,7 +198,8 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
+			
+			Logging.displayError(BDD_ACCESS_LOG);
 		} finally {
 			result.close();
 		}
