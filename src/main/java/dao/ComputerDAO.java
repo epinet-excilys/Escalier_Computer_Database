@@ -38,8 +38,10 @@ public final class ComputerDAO {
 	private static final String BDD_ACCESS_LOG = "Impossible de se connecter à la  BDD niveau DAO";
 	private static final String BDD_NULL_OBJECT_LOG = "Tentative de manipulation d'un objet null";
 
+	Connection conection;
 	private ComputerDAO() {
 		super();
+
 	}
 
 	public final static ComputerDAO getInstance() {
