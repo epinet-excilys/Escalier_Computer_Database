@@ -10,6 +10,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import model.Company;
+import model.Computer;
+
 public class ComputerMapperTest {
 
 	ComputerMapper instance;
@@ -30,7 +33,7 @@ public class ComputerMapperTest {
 		try {
 			assertEquals(null, instance.fromStringToLocalDate(""));
 		} catch (DateTimeParseException e) {
-			fail("le teste ne devait pas echouer");
+			fail("le test ne devait pas echouer");
 		}
 	}
 
@@ -62,5 +65,6 @@ public class ComputerMapperTest {
 			fail("le teste ne devait pas echouer");
 		}
 	}
+	
 
 }

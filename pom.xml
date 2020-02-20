@@ -10,7 +10,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>computer_database Maven Webapp</name>
+	<name>computer_database</name>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
 
@@ -63,6 +63,11 @@
 			<artifactId>h2</artifactId>
 			<version>1.4.195</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.0-b06</version>
 		</dependency>
 	</dependencies>
 
