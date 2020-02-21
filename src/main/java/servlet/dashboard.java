@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class AccueilServlet
  */
-@WebServlet(urlPatterns ="/AccueilServlet")
-public class AccueilServlet extends HttpServlet {
+@WebServlet(urlPatterns ="/dashboard")
+public class dashboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
