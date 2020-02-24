@@ -182,9 +182,11 @@ public final class ComputerDAO {
 				PreparedStatement stmt = connect.prepareStatement(getAllPaginateStatement);) {
 			stmt.setInt(1, ligneDebutOffSet);
 			stmt.setInt(2, taillePage);
+			
 			result = stmt.executeQuery();
 			while (result.next()) {
 				computer = ComputerMapper.getInstance().getComputerFromResultSet(result).get();
+				System.out.println(computer);
 				arrayList.add(computer);
 			}
 
