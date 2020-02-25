@@ -37,7 +37,7 @@
 				</c:out>
 				Computers founds in DataBase
 			</h1>
-			
+
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -84,24 +84,22 @@
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
-				
-				 <tbody id="results">
-             		<c:out value="truc de Personnalisation"/>
-                  <c:forEach items="${computerList}" var="computer">
-                    <tr>
-                        <td class="editMode">
-                            <input type="checkbox" name="cb" class="cb" value="0">
-                        </td>
-                        <td>
-                            <a href="editComputer.jsp" onclick=""><c:out value="${computer.name}"></c:out></a>
-                        </td>
-                        <td><c:out value="${computer.introDate}"></c:out> </td>
-                        <td><c:out value="${computer.discoDate}"></c:out> </td>
-                        <td><c:out value="${computer.company.name}"></c:out></td>
-                    </tr>
-				  </c:forEach>
-                </tbody>
- 
+
+				<tbody id="results">
+					<c:out value="Alors peut être" />
+					<c:forEach items="${computerList}" var="computer">
+						<tr>
+							<td class="editMode"><input type="checkbox" name="cb"
+								class="cb" value="0"></td>
+							<td><a href="editComputer.jsp" onclick=""><c:out
+										value="${computer.name}"></c:out></a></td>
+							<td><c:out value="${computer.introDate}"></c:out></td>
+							<td><c:out value="${computer.discoDate}"></c:out></td>
+							<td><c:out value="${computer.company.name}"></c:out></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+
 			</table>
 		</div>
 	</section>
@@ -109,33 +107,40 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-              <li>
-              	<c:if test="${pageIterator>0}">
-              		<a href="DashBoard?pageIterator=${pageIterator-1}" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-				</c:if>      
-              </li>
-              <c:forEach  var = "i" begin = "1" end = "5">
-              <li><a href="DashBoard?pageIterator=${pageIterator+i}"><c:out value="${pageIterator+i}"></c:out></a></li>
-			  </c:forEach>
-              <li>
-              <c:if test="${pageIterator<maxPage}">
-                <a href="DashBoard?pageIterator=${pageIterator+1}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-                </c:if>
-            </li>
-        </ul>
-			
-			<div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default"><a href="DashBoard?taillePage=10">10</a></button>
-            <button type="button" class="btn btn-default"><a href="DashBoard?taillePage=20">20</a></button>
-            <button type="button" class="btn btn-default"><a href="DashBoard?taillePage=50">50</a></button>
-            <button type="button" class="btn btn-default"><a href="DashBoard?taillePage=100">100</a></button>
-        </div>
-			
+				<li><c:if test="${pageIterator>0}">
+						<a href="DashBoard?pageIterator=${pageIterator-1}"
+							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+						</a>
+					</c:if></li>
+				<c:if test="${pageIterator < maxPage}">
+					<c:forEach var="i" begin="1" end="3">
+						<li><a href="DashBoard?pageIterator=${pageIterator+i}"><c:out
+									value="${pageIterator+i}"></c:out></a></li>
+					</c:forEach>
+				</c:if>
+				<li><c:if test="${pageIterator < maxPage}">
+						<a href="DashBoard?pageIterator=${pageIterator+1}"
+							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+						</a>
+					</c:if></li>
+			</ul>
+
+			<div class="btn-group btn-group-sm pull-right" role="group">
+				<button type="button" class="btn btn-default">
+					<a href="DashBoard?taillePage=10">10</a>
+				</button>
+				<button type="button" class="btn btn-default">
+					<a href="DashBoard?taillePage=20">20</a>
+				</button>
+				<button type="button" class="btn btn-default">
+					<a href="DashBoard?taillePage=50">50</a>
+				</button>
+				<button type="button" class="btn btn-default">
+					<a href="DashBoard?taillePage=100">100</a>
+				</button>
 			</div>
+
+		</div>
 	</footer>
 	<script src="resources/js/jquery.min.js"></script>
 	<script src="resources/js/bootstrap.min.js"></script>
