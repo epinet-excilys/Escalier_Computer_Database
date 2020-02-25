@@ -186,7 +186,6 @@ public final class ComputerDAO {
 			result = stmt.executeQuery();
 			while (result.next()) {
 				computer = ComputerMapper.getInstance().getComputerFromResultSet(result).get();
-				System.out.println(computer);
 				arrayList.add(computer);
 			}
 

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 import dao.CompanyDAO;
+import dto.CompanyDTO;
+import dto.ComputerDTO;
 import exception.Logging;
 import model.Company;
 import model.Computer;
@@ -89,6 +91,18 @@ public final class ComputerMapper {
 		} else {
 			return null;
 		}
+	}
+
+	public ComputerDTO fromComputerToComputerDTO(Computer computer) {
+		CompanyDTO companyDTO = new CompanyDTO();
+		companyDTO.setId(computer.getCompany().getId());
+		companyDTO.setName(computer.getCompany().getName());
+
+		ComputerDTO computerDTO = new ComputerDTO( computer.getName(),
+				computer.getIntroDate()==null?null:computer.getIntroDate().toString(),
+				computer.getDiscoDate()==null?null:computer.getDiscoDate().toString(),companyDTO);
+		computerDTO.setId(computer.getId());
+		return computerDTO;
 	}
 
 }

@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dto.ComputerDTO;
 import exception.Logging;
+import mapper.ComputerMapper;
 import model.Computer;
 import service.ComputerDAOImpl;
 
@@ -20,23 +22,38 @@ import service.ComputerDAOImpl;
 @WebServlet(name= "DashBoardServlet",  urlPatterns ="/DashBoard")
 public class DashBoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	private int pageIterator = 0;
+	private int pageSize = 20;
+	private int maxPage = 0;
+    private int NbRowComputer = 0;
+  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		NbRowComputer = ComputerDAOImpl.getInstance().getNbRows();
+		maxPage = NbRowComputer/pageSize;
+		ArrayList<Computer> computerList = new ArrayList<Computer>();
+		ArrayList<ComputerDTO>computerDTOList=new ArrayList<ComputerDTO>();
 		
-		request.setAttribute("NbRowComputer",100000);
-		ArrayList<Computer> ComputerList = ComputerDAOImpl.getInstance().getAllPaginateComput(0,20);
-		request.setAttribute("ComputerListDAO",ComputerList );
-		for(Computer c : ComputerList){
-			System.out.println(c);
-		};
-
+		
+		if(request.getParameter("taillePage")!=null) {
+			pageSize=Integer.parseInt(request.getParameter("taillePage"));
+		}
+		if(request.getParameter("pageIterator")!=null) {
+			pageIterator=Integer.parseInt(request.getParameter("pageIterator"));
+			computerList=ComputerDAOImpl.getInstance().getAllPaginateComput(pageIterator*pageSize,pageSize);
+		}
+		else {
+			pageIterator=0;
+			computerList=ComputerDAOImpl.getInstance().getAllPaginateComput(0,20);
+		}
+		
+		computerList.stream()
+		.forEach(computer->computerDTOList.add(ComputerMapper.getInstance().fromComputerToComputerDTO(computer)));
+		
+		
+		request.setAttribute("maxPage",maxPage);
+		request.setAttribute("NbRowComputer",NbRowComputer);
+		request.setAttribute("computerList",computerList );
 		request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request,response);
 	}
 
