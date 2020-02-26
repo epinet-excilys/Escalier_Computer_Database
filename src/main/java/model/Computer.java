@@ -3,59 +3,60 @@ package model;
 import java.time.LocalDate;
 
 public class Computer {
-	
+
 	private int id;
 	private String name;
 	private LocalDate introDate;
 	private LocalDate discoDate;
 	private Company company;
-	
-	
-	
-	public Computer(int id, String name, LocalDate introDate, LocalDate discoDate, Company company) {
-		this.id = id;
-		this.name = name;
-		this.introDate = introDate;
-		this.discoDate = discoDate;
-		this.company = company;
+
+	private Computer(ComputerBuilder builder) {
+		this.id = builder.idBuild;
+		this.name = builder.nameBuild;
+		this.introDate = builder.introDateBuild;
+		this.discoDate = builder.discoDateBuild;
+		this.company = builder.companyBuild;
 	}
-		
-	public Computer() {
-	}
-	
-	
 
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public LocalDate getIntroDate() {
 		return introDate;
 	}
+
 	public void setIntroDate(LocalDate introDate) {
 		this.introDate = introDate;
 	}
+
 	public LocalDate getDiscoDate() {
 		return discoDate;
 	}
+
 	public void setDiscoDate(LocalDate discoDate) {
 		this.discoDate = discoDate;
 	}
+
 	public Company getCompany() {
 		return company;
 	}
+
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
 
 	public static class ComputerBuilder {
 		private int idBuild;
@@ -94,15 +95,6 @@ public class Computer {
 		}
 	}
 
-	private Computer(ComputerBuilder builder) {
-		this.id = builder.idBuild;
-		this.name = builder.nameBuild;
-		this.introDate = builder.introDateBuild;
-		this.discoDate = builder.discoDateBuild;
-		this.company = builder.companyBuild;
-	}
-	
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -130,11 +122,5 @@ public class Computer {
 		return "Computer [id=" + id + ", name=" + name + ", introDate=" + introDate + ", discoDate=" + discoDate
 				+ ", company=" + company + "]";
 	}
-
-	
-
-	
-	
-	
 
 }
