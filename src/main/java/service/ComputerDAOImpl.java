@@ -11,6 +11,8 @@ import exception.Logging;
 import model.Computer;
 
 public final class ComputerDAOImpl {
+	
+	private ComputerDAO computerDAO =  ComputerDAO.getInstance();
 
 	private static final String bddAccessLog = "Impossible de recuperer le computer dans la BDD";
 	private static final String bddAddLog = "Impossible d'ajouter le computer en BDD";
@@ -42,7 +44,7 @@ public final class ComputerDAOImpl {
 		Computer comp = null;
 		int valueOfUpdate = 0;
 		try {
-			comp = ComputerDAO.getInstance().find(obj.getId()).get();
+			comp = computerDAO.find(obj.getId()).get();
 		} catch (SQLException e) {
 			Logging.displayError(bddAccessLog);
 		}

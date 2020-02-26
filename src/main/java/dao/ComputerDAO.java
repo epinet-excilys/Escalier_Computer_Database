@@ -78,9 +78,9 @@ public final class ComputerDAO {
 				valueOfPreparedStatement = stmt.executeUpdate();
 
 			} catch (SQLException e) {
-				Logging.displayError(BDD_ACCESS_LOG);
+				Logging.getLog().error(BDD_ACCESS_LOG);
 			} catch (NullPointerException e) {
-				Logging.displayError(BDD_NULL_OBJECT_LOG);
+				Logging.getLog().error(BDD_NULL_OBJECT_LOG);
 			}
 		}
 		return valueOfPreparedStatement;
@@ -95,7 +95,7 @@ public final class ComputerDAO {
 			valueOfPreparedStatement = stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			Logging.displayError(BDD_ACCESS_LOG);
+			Logging.getLog().error(BDD_ACCESS_LOG);
 		}
 		return valueOfPreparedStatement;
 	}
@@ -117,9 +117,9 @@ public final class ComputerDAO {
 				valueOfPreparedStatement = stmt.executeUpdate();
 
 			} catch (SQLException e) {
-				Logging.displayError(BDD_ACCESS_LOG);
+				Logging.getLog().error(BDD_ACCESS_LOG);
 			} catch (NullPointerException e) {
-				Logging.displayError(BDD_NULL_OBJECT_LOG);
+				Logging.getLog().error(BDD_NULL_OBJECT_LOG);
 			}
 		}
 		return valueOfPreparedStatement;
@@ -141,7 +141,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			Logging.displayError(BDD_ACCESS_LOG);
+			Logging.getLog().error(BDD_ACCESS_LOG);
 		} finally {
 			result.close();
 		}
@@ -164,7 +164,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			Logging.displayError(BDD_ACCESS_LOG);
+			Logging.getLog().error(BDD_ACCESS_LOG);
 		} finally {
 			result.close();
 
@@ -190,7 +190,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e) {
-			Logging.displayError(BDD_ACCESS_LOG);
+			Logging.getLog().error(BDD_ACCESS_LOG);
 		} finally {
 			result.close();
 
@@ -213,7 +213,7 @@ public final class ComputerDAO {
 
 		} catch (SQLException e) {
 
-			Logging.displayError(BDD_ACCESS_LOG);
+			Logging.getLog().error(BDD_ACCESS_LOG);
 		} finally {
 			result.close();
 		}

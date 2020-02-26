@@ -1,64 +1,69 @@
 package dao;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import exception.Logging;
 
 public class ConnexionSQL {
 
-	private static String url = "jdbc:mysql://localhost:3306/computer-database-db";
-	private static String user = "nom_utilisateur_choisi";
-	private static String password = "mot_de_passe_solide";
-	private static String driver = "com.mysql.jdbc.Driver";
-	///////////////////////////////////////////////////////////////////////////////
-	private static String urlTest = "jdbc:h2:mem:computer-database-db;INIT=RUNSCRIPT FROM 'src/test/resources/h2SQLgeneration.sql'";
-	private static String userTest = "sa";
-	private static String passwordTest = "";
-	private static String driverh2 = "org.h2.Driver";
-	///////////////////////////////////////////////////////////////////////////////
+	private static Properties conProp;
+	private static final String CONFIGURATION_LOCATION = "database.propreties";
+	private static String toWhichDatabaseAreWeConnected;
+	private static String url;
+	private static String user;
+	private static String password;
+	private static String driver;
+
+	private static final String IOE_LOG = "Le chargement des proprieté";
 	private static final String CONNECTION_LOG = "L'ouverture de connexion a echoué";
-	private static final String CLASS_NOT_FOUND_LOG = "La classe n'est pas trouver "; 
- 
-	public static Connection getConn() {
-		
-		
-		if (isTestRunning(System.getProperty("testState"))) {
-			Logging.displayInfo("Version test");
-			try {
-				Class.forName(driverh2);
-				return DriverManager.getConnection(urlTest, userTest, passwordTest);
-			} catch (SQLException e) {
-				Logging.displayError(CONNECTION_LOG);
-			} catch (ClassNotFoundException e) {
-				Logging.displayError(CLASS_NOT_FOUND_LOG);
-			}
-			return null;
-			
-		} else {
-			Logging.displayInfo("Version prod");
-			try {
-				Class.forName(driver);
-				return DriverManager.getConnection(url, user, password);
-			} catch (SQLException | ClassNotFoundException e) {
-				Logging.displayError(CONNECTION_LOG);
-			}
-			return null;
-			
-		}
-		
-		
-	}
+	private static final String CLASS_NOT_FOUND_LOG = "La classe n'est pas trouver ";
+
+	public static Logger LOGGER = LoggerFactory.getLogger(ConnexionSQL.class);
 	
-	private static boolean isTestRunning(String testState) {
-		if(testState == null) {
-			return false;
-		}else if(testState.contentEquals("Running")){
-			return true;
-		} else {
-			return false;
+	public static Connection getConn() {
+
+		conProp = new Properties();
+		System.out.println("Mabite");
+
+		try {
+			conProp.load(Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream("database.properties"));
+			
+			driver = conProp.getProperty("driver");
+			url = conProp.getProperty("url");
+			user = conProp.getProperty("user");
+			password = conProp.getProperty("password");
+			toWhichDatabaseAreWeConnected = conProp.getProperty("stateOfBDD");
+			
+			
+			System.out.println(driver);
+			System.out.println(url);
+			
+			Logging.getLog().info((toWhichDatabaseAreWeConnected));
+			
+			
+			Class.forName(driver);
+
+			return DriverManager.getConnection(url, user, password);
+
+		} catch (IOException e1) {
+			LOGGER.error(IOE_LOG + e1.getMessage());
+		} catch (SQLException e2) {
+			LOGGER.error(CONNECTION_LOG + e2.getMessage());
+		} catch (ClassNotFoundException e3) {
+			LOGGER.error(CLASS_NOT_FOUND_LOG + e3.getMessage());
 		}
+
+		System.exit(0);
+		return null;
 	}
 
 }

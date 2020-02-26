@@ -46,7 +46,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testAddComputerIntendedUse() {
-		Company company = new Company.CompanyBuilder().setIdBuild(1).build();
+		Company company = new Company.builder().setIdBuild(1).build();
 		Computer computer = new Computer.ComputerBuilder().setNameBuild("Nom")
 				.setIntroDateBuild(LocalDate.now().minusYears(5)).setDiscoDateBuild(LocalDate.now().minusYears(1))
 				.setIdCompagnyBuild(company).build();
@@ -77,7 +77,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testModifComputerIntendedUse() {
-		Company company = new Company.CompanyBuilder().setIdBuild(1).setNameBuild("Apple Inc.").build();
+		Company company = new Company.builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(1).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroDateBuild(LocalDate.now().minusYears(5)).setDiscoDateBuild(LocalDate.now().minusYears(1))
 				.setIdCompagnyBuild(company).build();
@@ -108,7 +108,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testModifComputerGreaterId() {
-		Company company = new Company.CompanyBuilder().setIdBuild(1).setNameBuild("Apple Inc.").build();
+		Company company = new Company.builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(70).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroDateBuild(LocalDate.now().minusYears(5)).setDiscoDateBuild(LocalDate.now().minusYears(1))
 				.setIdCompagnyBuild(company).build();
@@ -125,7 +125,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testDeleteComputerIntendedUse() {
-		Company company = new Company.CompanyBuilder().setIdBuild(1).setNameBuild("Apple Inc.").build();
+		Company company = new Company.builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(1).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroDateBuild(LocalDate.now().minusYears(5)).setDiscoDateBuild(LocalDate.now().minusYears(1))
 				.setIdCompagnyBuild(company).build();
@@ -142,7 +142,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testDeleteComputerGreaterId() {
-		Company company = new Company.CompanyBuilder().setIdBuild(1).setNameBuild("Apple Inc.").build();
+		Company company = new Company.builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(70).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroDateBuild(LocalDate.now().minusYears(5)).setDiscoDateBuild(LocalDate.now().minusYears(1))
 				.setIdCompagnyBuild(company).build();
@@ -173,7 +173,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testFindComputerIntendeduse() {
-		Company company = new Company.CompanyBuilder().setIdBuild(1).setNameBuild("Apple Inc.").build();
+		Company company = new Company.builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
 		Computer computer = new Computer.ComputerBuilder().setIdBuild(1).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroDateBuild(LocalDate.now().minusYears(5)).setDiscoDateBuild(LocalDate.now().minusYears(1))
 				.setIdCompagnyBuild(company).build();
@@ -214,7 +214,7 @@ public class ComputerDAOTest {
 	
 	@Test
 	public void testFindAllPaginateWrongEntry() {
-		ArrayList<Computer> computers; 
+		List<Computer> computers = new ArrayList<>(); 
 		try {
 			computers = ComputerDAO.getInstance().findAllPaginate(-5,TAILLE_PAGE);
 			assertTrue(computers.size()==TAILLE_PAGE);
@@ -228,8 +228,8 @@ public class ComputerDAOTest {
 	public void testFindAllPaginateAllComputersListAreEquals() {
 		
 		try {
-			ArrayList<Computer> computersBDD = ComputerDAO.getInstance().findAllPaginate(0,TAILLE_PAGE);
-			ArrayList<Computer> computersAdd = getTheFirst10Computers();
+			List<Computer> computersBDD = ComputerDAO.getInstance().findAllPaginate(0,TAILLE_PAGE);
+			List<Computer> computersAdd = getTheFirst10Computers();
 			
 			
 			assertEquals(computersBDD,computersAdd);
@@ -240,13 +240,13 @@ public class ComputerDAOTest {
 
 	}
 	
-	public ArrayList<Computer> getTheFirst10Computers(){
-		ArrayList<Computer> computers = new ArrayList<>();
-		Company company1 = new Company.CompanyBuilder().setIdBuild(1).setNameBuild("Apple Inc.").build();
-		Company company2 = new Company.CompanyBuilder().setIdBuild(2).setNameBuild("Thinking Machines").build();
-		Company company3 = new Company.CompanyBuilder().setIdBuild(1).setNameBuild("RCA").build();
-		Company company4 = new Company.CompanyBuilder().setIdBuild(1).setNameBuild("Netronics").build();
-		Company companyNull = new Company.CompanyBuilder().build();
+	public List<Computer> getTheFirst10Computers(){
+		List<Computer> computers = new ArrayList<>();
+		Company company1 = new Company.builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
+		Company company2 = new Company.builder().setIdBuild(2).setNameBuild("Thinking Machines").build();
+		Company company3 = new Company.builder().setIdBuild(1).setNameBuild("RCA").build();
+		Company company4 = new Company.builder().setIdBuild(1).setNameBuild("Netronics").build();
+		Company companyNull = new Company.builder().build();
 		Computer computer1 = new Computer.ComputerBuilder().setIdBuild(1).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroDateBuild(null).setDiscoDateBuild(null)
 				.setIdCompagnyBuild(company1).build();

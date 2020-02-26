@@ -22,7 +22,7 @@ public final class CompanyDAO {
 	private final String getAllStatement = "SELECT company.id, company.name FROM company";
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM company;";
 
-	private ResultSet result;
+
 	
 	private final static String bddAccessLog = "Impossible d'acceder à la BDD niveau DAO";
 
@@ -55,7 +55,8 @@ public final class CompanyDAO {
 
 	public Optional<Company> find(int i) throws SQLException {
 
-		Company company = new Company().builder.build();
+		Company company = new Company.builder().build();
+		private ResultSet result;
 		
 		try (Connection connect = ConnexionSQL.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getStatement);) {
@@ -80,7 +81,8 @@ public final class CompanyDAO {
 
 		ArrayList<Company> list = new ArrayList<Company>();
 		Company company;
-
+		private ResultSet result;
+		
 		try (Connection connect = ConnexionSQL.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getAllStatement);) {
 
