@@ -55,8 +55,8 @@ public final class CompanyDAO {
 
 	public Optional<Company> find(int i) throws SQLException {
 
-		Company company = new Company();
-
+		Company company = new Company().builder.build();
+		
 		try (Connection connect = ConnexionSQL.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getStatement);) {
 

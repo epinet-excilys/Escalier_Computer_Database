@@ -5,21 +5,6 @@ public class Company {
 	private int id;
 	private String name;
 	
-	private Company(int id, String name) {
-		this.id = id;
-		this.name = name;
-	}
-	
-	public Company() {
-	}
-	
-
-
-	public Company(int id) {
-		this.id = id;
-		
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -33,19 +18,19 @@ public class Company {
 		this.name = name;
 	}
 	
-	public static class CompanyBuilder {
+	public static class builder {
 		private int idBuild;
 		private String nameBuild;
 
-		public CompanyBuilder() {
+		public builder() {
 		}
 
-		public CompanyBuilder setIdBuild(int idBDD) {
+		public builder setIdBuild(int idBDD) {
 			this.idBuild = idBDD;
 			return this;
 		}
 
-		public CompanyBuilder setNameBuild(String nameBDD) {
+		public builder setNameBuild(String nameBDD) {
 			this.nameBuild = nameBDD;
 			return this;
 		}
@@ -55,7 +40,7 @@ public class Company {
 		}
 	}
 	
-	public Company(CompanyBuilder builder) {
+	public Company(builder builder) {
 		this.id = builder.idBuild;
 		this.name = builder.nameBuild;
 	}

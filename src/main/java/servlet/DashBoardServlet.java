@@ -20,11 +20,12 @@ import service.ComputerDAOImpl;
  */
 @WebServlet(name = "DashBoardServlet", urlPatterns = "/DashBoard")
 public class DashBoardServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 	private int pageIterator = 0;
 	private int pageSize = 20;
 	private int maxPage = 0;
 	private int NbRowComputer = 0;
+	
+	private static final String DASHBOARD = "/WEB-INF/views/dashboard.jsp";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -57,7 +58,7 @@ public class DashBoardServlet extends HttpServlet {
 
 		request.setAttribute("NbRowComputer", NbRowComputer);
 		request.setAttribute("computerList", computerList);
-		request.getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+		request.getRequestDispatcher(DASHBOARD).forward(request, response);
 	}
 
 	/**
