@@ -1,23 +1,23 @@
 package model;
 
 public class Company {
-	
+
 	private int id;
 	private String name;
-	
+
+	private Company(builder builder) {
+		this.id = builder.idBuild;
+		this.name = builder.nameBuild;
+	}
+
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+
 	public static class builder {
 		private int idBuild;
 		private String nameBuild;
@@ -39,11 +39,6 @@ public class Company {
 			return new Company(this);
 		}
 	}
-	
-	public Company(builder builder) {
-		this.id = builder.idBuild;
-		this.name = builder.nameBuild;
-	}
 
 	@Override
 	public int hashCode() {
@@ -52,7 +47,6 @@ public class Company {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -71,12 +65,9 @@ public class Company {
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Company [name=" + name + "]";
 	}
-	
-	
 
 }
