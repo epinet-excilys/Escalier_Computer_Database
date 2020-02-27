@@ -5,7 +5,7 @@ public class Company {
 	private int id;
 	private String name;
 
-	private Company(builder builder) {
+	private Company(Builder builder) {
 		this.id = builder.idBuild;
 		this.name = builder.nameBuild;
 	}
@@ -18,19 +18,19 @@ public class Company {
 		return name;
 	}
 
-	public static class builder {
+	public static class Builder {
 		private int idBuild;
 		private String nameBuild;
 
-		public builder() {
+		public Builder() {
 		}
 
-		public builder setIdBuild(int idBDD) {
+		public Builder setIdBuild(int idBDD) {
 			this.idBuild = idBDD;
 			return this;
 		}
 
-		public builder setNameBuild(String nameBDD) {
+		public Builder setNameBuild(String nameBDD) {
 			this.nameBuild = nameBDD;
 			return this;
 		}

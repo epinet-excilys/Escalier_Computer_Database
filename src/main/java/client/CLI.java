@@ -25,7 +25,6 @@ public class CLI {
 	private final String BDD_MOD_LOG = "Impossible de modifier le computer en BDD";
 	private final String PARSE_LOG = "Impossible de Parser la date fournit";
 	private final String SQL_LOG = "SQL erreur";
-	
 
 	public CLI() {
 		scanner = new Scanner(System.in);
@@ -85,11 +84,9 @@ public class CLI {
 
 	}
 
-	// TODO A REFAIRE
-	// Methode Comput
 	public void addComput() {
 
-		Computer comp = null;
+		Computer computer = ;
 
 		afficher("Vous allez saisir les valeurs champs par champs");
 
@@ -110,13 +107,13 @@ public class CLI {
 		afficher("Saisir l'id de la companie ");
 		tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
 
-		Computer computer = null; 
+		Computer computer = null;
 		try {
 			computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
-		} catch (ParseException parseEx) {
-			Logging.displayError(PARSE_LOG);
-		} catch (SQLException sqlEx) {
-			Logging.displayError(SQL_LOG);
+		} catch (ParseException e1) {
+			Logging.getLog().error(PARSE_LOG + e1.getMessage());
+		} catch (SQLException e2) {
+			Logging.getLog().error(SQL_LOG + e2.getMessage());
 		}
 		tabRep = null;
 
@@ -338,6 +335,5 @@ public class CLI {
 		return repEnInt;
 
 	}
-	
 
 }

@@ -61,7 +61,7 @@ public class ConnexionSQL {
 			LOGGER.error(CLASS_NOT_FOUND_LOG + e3.getMessage());
 		}
 
-		//TODO Hikari
+		//TODO Hikari va permettre d'enlever le return null;
 		{
 		System.exit(0);
 		
