@@ -24,7 +24,6 @@ public final class ComputerDAO {
 			+ "VALUES(?, ?, ?, ?);";
 	private final String updateStatement = "UPDATE computer set name=?, introduced=? , discontinued=?, company_id=? where id=?;";
 	private final String deleteStatement = "DELETE from computer where id=?;";
-	//
 	private final String getStatement = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name"
 			+ " FROM computer  LEFT JOIN company ON company_id = company.id WHERE computer.id = ?;";
 	private final String getAllStatement = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id ;";
@@ -35,6 +34,7 @@ public final class ComputerDAO {
 	private static final String BDD_NULL_OBJECT_LOG = "Tentative de manipulation d'un objet null";
 
 	private static ConnexionSQL connection = ConnexionSQL.getInstance();
+	
 	public static Logger LOGGER = LoggerFactory.getLogger(ConnexionSQL.class);
 
 	private ComputerDAO() {
@@ -43,9 +43,7 @@ public final class ComputerDAO {
 	}
 
 	public final static ComputerDAO getInstance() {
-
 		if (ComputerDAO.instance == null) {
-
 			synchronized (ComputerDAO.class) {
 				if (ComputerDAO.instance == null) {
 					ComputerDAO.instance = new ComputerDAO();
@@ -134,7 +132,6 @@ public final class ComputerDAO {
 
 				if (result.first()) {
 					computer = ComputerMapper.getInstance().getComputerFromResultSet(result);
-
 				}
 			}
 

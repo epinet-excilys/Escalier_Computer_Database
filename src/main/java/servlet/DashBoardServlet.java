@@ -45,7 +45,7 @@ public class DashBoardServlet extends HttpServlet {
 			computerList = ComputerDAOService.getInstance().getAllPaginateComput(pageIterator * pageSize, pageSize);
 		} else {
 			pageIterator = 0;
-			computerList = ComputerDAOImpl.getInstance().getAllPaginateComput(0, 20);
+			computerList = ComputerDAOService.getInstance().getAllPaginateComput(0, 20);
 		}
 
 		computerList.stream().forEach(

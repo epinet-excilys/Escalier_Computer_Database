@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import dao.CompanyDAO;
+import dao.ComputerDAO;
 import model.Company;
 
 public final class CompanyDAOService {
 
+	private CompanyDAO companyDAO = CompanyDAO.getInstance();
 	private static volatile CompanyDAOService instance = null;
-
 
 	private CompanyDAOService() {
 		super();
@@ -29,20 +30,19 @@ public final class CompanyDAOService {
 
 	public Optional<Company> findByID(int ID) {
 		Company company = new Company.Builder().build();
-		company = CompanyDAO.getInstance().findByID(ID).get();
+		company = companyDAO.findByID(ID).get();
 		return Optional.ofNullable(company);
 	}
 
 	public List<Company> getAllComput() {
 		List<Company> listCompany = new ArrayList<>();
-		listCompany = CompanyDAO.getInstance().findAll();
+		listCompany = companyDAO.findAll();
 		return listCompany;
-
 	}
 
 	public int getNbRows() {
 		int nbRow = -1;
-		nbRow = CompanyDAO.getInstance().getNbRow();
+		nbRow = companyDAO.getNbRow();
 		return nbRow;
 	}
 

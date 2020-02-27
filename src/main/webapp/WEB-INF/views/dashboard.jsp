@@ -93,8 +93,8 @@
 								class="cb" value="0"></td>
 							<td><a href="editComputer.jsp" onclick=""><c:out
 										value="${computer.name}"></c:out></a></td>
-							<td><c:out value="${computer.introDate}"></c:out></td>
-							<td><c:out value="${computer.discoDate}"></c:out></td>
+							<td><c:out value="${computer.introducedDate}"></c:out></td>
+							<td><c:out value="${computer.discontinuedDate}"></c:out></td>
 							<td><c:out value="${computer.company.name}"></c:out></td>
 						</tr>
 					</c:forEach>

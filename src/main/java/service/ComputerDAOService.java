@@ -10,7 +10,6 @@ import model.Computer;
 public final class ComputerDAOService {
 
 	private ComputerDAO computerDAO = ComputerDAO.getInstance();
-
 	private static volatile ComputerDAOService instance = null;
 
 	private ComputerDAOService() {
@@ -33,47 +32,47 @@ public final class ComputerDAOService {
 		int nbOfRowUpdatedInDB = 0;
 		computerToUpdate = computerDAO.findByID(computer.getId()).get();
 		if (computerToUpdate != null) {
-			ComputerDAO.getInstance().update(computer);
+			computerDAO.update(computer);
 		}
 		return nbOfRowUpdatedInDB;
 	}
 
 	public int add(Computer computer) {
 		int nbOfRowAddedInDB = 0;
-		nbOfRowAddedInDB = ComputerDAO.getInstance().create(computer);
+		nbOfRowAddedInDB = computerDAO.create(computer);
 		return nbOfRowAddedInDB;
 	}
 
 	public int delete(Computer computer) {
 		int nbOfRowDeletedInDB = 0;
-		nbOfRowDeletedInDB = ComputerDAO.getInstance().delete(computer.getId());
+		nbOfRowDeletedInDB = computerDAO.delete(computer.getId());
 		return nbOfRowDeletedInDB;
 	}
 
 	//
 	public Optional<Computer> findByID(int ID) {
 		Optional<Computer> computer = Optional.empty();
-		computer = ComputerDAO.getInstance().findByID(ID);
+		computer = computerDAO.findByID(ID);
 		return computer;
 	}
 
 	public List<Computer> getAllComput() {
 		List<Computer> listComputer = new ArrayList<>();
-		listComputer = ComputerDAO.getInstance().findAll();
+		listComputer = computerDAO.findAll();
 		return listComputer;
 
 	}
 
 	public List<Computer> getAllPaginateComput(int ligneDebutOffSet, int taillePage) {
 		List<Computer> listComputer = new ArrayList<>();
-		listComputer = ComputerDAO.getInstance().findAllPaginate(ligneDebutOffSet, taillePage);
+		listComputer = computerDAO.findAllPaginate(ligneDebutOffSet, taillePage);
 		return listComputer;
 
 	}
 
 	public int getNbRows() {
 		int nbRow = -1;
-		nbRow = ComputerDAO.getInstance().getNbRow();
+		nbRow = computerDAO.getNbRow();
 		return nbRow;
 	}
 

@@ -23,24 +23,16 @@ public class ComputerDAOTest {
 	private final int TAILLE_PAGE = 10;
 
 	@Before
-	public void setUp() throws Exception {
-		System.setProperty("testState", "Running");
-
+	public void setUp() {
 	}
 
 	@After
-	public void tearDown() throws Exception {
-		System.setProperty("testState", "Ending");
+	public void tearDown() {
 	}
 
 	@Test
 	public void testgetNBRows() {
-		try {
-			assertTrue(ComputerDAO.getInstance().getNbRow() == 50);
-		} catch (SQLException e1) {
-			fail("L'acces à la BDD est impossible" + e1.getMessage());
-		}
-
+		assertTrue(ComputerDAO.getInstance().getNbRow() == 50);
 	}
 
 	@Test
@@ -118,7 +110,6 @@ public class ComputerDAOTest {
 		Computer computer = new Computer.Builder().setIdBuild(1).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroducedDateBuild(LocalDate.now().minusYears(5))
 				.setDiscontinuedDateBuild(LocalDate.now().minusYears(1)).setIdCompagnyBuild(company).build();
-
 		try {
 			assertTrue(ComputerDAO.getInstance().update(computer) == INTENDED_USE_RETURN_VALUE);
 		} catch (NoSuchElementException e1) {
@@ -133,7 +124,6 @@ public class ComputerDAOTest {
 		Computer computer = new Computer.Builder().setIdBuild(70).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroducedDateBuild(LocalDate.now().minusYears(5))
 				.setDiscontinuedDateBuild(LocalDate.now().minusYears(1)).setIdCompagnyBuild(company).build();
-
 		try {
 			assertTrue(ComputerDAO.getInstance().update(computer) == WRONG_USE_RETURN_VALUE);
 		} catch (NoSuchElementException e1) {
@@ -145,7 +135,6 @@ public class ComputerDAOTest {
 	@Test
 	public void testDeleteComputerNullId() {
 		Computer computer = new Computer.Builder().build();
-
 		try {
 			assertTrue(ComputerDAO.getInstance().update(computer) == WRONG_USE_RETURN_VALUE);
 		} catch (NoSuchElementException e1) {
@@ -158,9 +147,7 @@ public class ComputerDAOTest {
 	public void testFindComputerIntendeduse() {
 		Company company = new Company.Builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
 		Computer computer = new Computer.Builder().setIdBuild(1).setNameBuild("MacBook Pro 15.4 inch")
-				.setIntroducedDateBuild(null)
-				.setDiscontinuedDateBuild(null).setIdCompagnyBuild(company).build();
-
+				.setIntroducedDateBuild(null).setDiscontinuedDateBuild(null).setIdCompagnyBuild(company).build();
 		try {
 			assertTrue(ComputerDAO.getInstance().findByID(1).get().equals(computer));
 		} catch (NoSuchElementException e1) {
@@ -182,9 +169,7 @@ public class ComputerDAOTest {
 
 	@Test
 	public void testFindAllPaginateCorrectSize() {
-
 		assertTrue(ComputerDAO.getInstance().findAllPaginate(0, TAILLE_PAGE).size() == TAILLE_PAGE);
-
 	}
 
 	@Test
@@ -199,7 +184,6 @@ public class ComputerDAOTest {
 		List<Computer> computersBDD = ComputerDAO.getInstance().findAllPaginate(0, TAILLE_PAGE);
 		List<Computer> computersAdd = getTheFirst10Computers();
 		assertEquals(computersBDD, computersAdd);
-
 	}
 
 	public List<Computer> getTheFirst10Computers() {
@@ -227,11 +211,11 @@ public class ComputerDAOTest {
 				.setIntroducedDateBuild(ComputerMapper.getInstance().fromStringToLocalDate("2006-01-10"))
 				.setDiscontinuedDateBuild(null).setIdCompagnyBuild(company1).build();
 		computers.add(computer6);
-		Computer computer7 = new Computer.Builder().setIdBuild(7).setNameBuild("Apple IIe")
-				.setIntroducedDateBuild(null).setDiscontinuedDateBuild(null).setIdCompagnyBuild(companyNull).build();
+		Computer computer7 = new Computer.Builder().setIdBuild(7).setNameBuild("Apple IIe").setIntroducedDateBuild(null)
+				.setDiscontinuedDateBuild(null).setIdCompagnyBuild(companyNull).build();
 		computers.add(computer7);
-		Computer computer8 = new Computer.Builder().setIdBuild(8).setNameBuild("Apple IIc")
-				.setIntroducedDateBuild(null).setDiscontinuedDateBuild(null).setIdCompagnyBuild(companyNull).build();
+		Computer computer8 = new Computer.Builder().setIdBuild(8).setNameBuild("Apple IIc").setIntroducedDateBuild(null)
+				.setDiscontinuedDateBuild(null).setIdCompagnyBuild(companyNull).build();
 		computers.add(computer8);
 		Computer computer9 = new Computer.Builder().setIdBuild(9).setNameBuild("Apple IIGS")
 				.setIntroducedDateBuild(null).setDiscontinuedDateBuild(null).setIdCompagnyBuild(companyNull).build();

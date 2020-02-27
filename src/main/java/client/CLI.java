@@ -1,21 +1,15 @@
 package client;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Scanner;
 
+import dao.ComputerDAO;
+import mapper.ComputerMapper;
 import model.Company;
 import model.Computer;
-import service.ComputerDAOImpl;
-import service.ComputerDAOService;
-import service.CompanyDAOImpl;
 import service.CompanyDAOService;
-import mapper.ComputerMapper;
-import dao.ComputerDAO;
-import exception.Logging;;
+import service.ComputerDAOService;;
 
 public class CLI {
 
