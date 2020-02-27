@@ -14,8 +14,8 @@ import exception.Logging;
 
 public class ConnexionSQL {
 
-	private static Properties conProp;
-	private static final String CONFIGURATION_LOCATION = "database.propreties";
+	private static Properties connectionProperties;
+	private static final String CONFIGURATION_LOCATION = "database.properties";
 	private static String toWhichDatabaseAreWeConnected;
 	private static String url;
 	private static String user;
@@ -30,18 +30,17 @@ public class ConnexionSQL {
 	
 	public static Connection getConn() {
 
-		conProp = new Properties();
-		System.out.println("Mabite");
+		connectionProperties = new Properties();
 
 		try {
-			conProp.load(Thread.currentThread().getContextClassLoader()
-					.getResourceAsStream("database.properties"));
+			connectionProperties.load(Thread.currentThread().getContextClassLoader()
+					.getResourceAsStream(CONFIGURATION_LOCATION));
 			
-			driver = conProp.getProperty("driver");
-			url = conProp.getProperty("url");
-			user = conProp.getProperty("user");
-			password = conProp.getProperty("password");
-			toWhichDatabaseAreWeConnected = conProp.getProperty("stateOfBDD");
+			driver = connectionProperties.getProperty("driver");
+			url = connectionProperties.getProperty("url");
+			user = connectionProperties.getProperty("user");
+			password = connectionProperties.getProperty("password");
+			toWhichDatabaseAreWeConnected = connectionProperties.getProperty("stateOfBDD");
 			
 			
 			System.out.println(driver);
@@ -62,8 +61,13 @@ public class ConnexionSQL {
 			LOGGER.error(CLASS_NOT_FOUND_LOG + e3.getMessage());
 		}
 
+		//TODO Hikari
+		{
 		System.exit(0);
+		
 		return null;
+		
+		}
 	}
 
 }

@@ -17,7 +17,7 @@ import exception.Logging;;
 
 public class CLI {
 
-	private Scanner sc;
+	private Scanner scanner;
 	private String[] tabRep = { "", "", "", "", "" };
 	private boolean flagContinue;
 	private final int TAILLE_PAGE = 20;
@@ -28,7 +28,7 @@ public class CLI {
 	
 
 	public CLI() {
-		sc = new Scanner(System.in);
+		scanner = new Scanner(System.in);
 
 	}
 
@@ -99,13 +99,13 @@ public class CLI {
 		tabRep[0] = (passage_1);
 
 		afficher("Saisir le nom");
-		tabRep[1] = (sc.nextLine());
+		tabRep[1] = (scanner.nextLine());
 
 		afficher("Saisir la Date d'introduction sur le marché (AAAA-MM-dd)");
-		tabRep[2] = (sc.nextLine());
+		tabRep[2] = (scanner.nextLine());
 
 		afficher("Saisir la Date de retrait du le marché (AAAA-MM-dd)");
-		tabRep[3] = (sc.nextLine());
+		tabRep[3] = (scanner.nextLine());
 
 		afficher("Saisir l'id de la companie ");
 		tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
@@ -140,15 +140,15 @@ public class CLI {
 
 				afficher("Nom Actuel : " + comp.get().getName());
 				afficher("Saisir le nouveau nom");
-				tabRep[1] = (sc.nextLine());
+				tabRep[1] = (scanner.nextLine());
 
 				afficher("Intro Date Actuel : " + comp.get().getIntroDate());
 				afficher("Saisir la Date d'introduction sur le marché (AAAA-MM-dd)");
-				tabRep[2] = (sc.nextLine());
+				tabRep[2] = (scanner.nextLine());
 
 				afficher("Disco Date Actuel : " + comp.get().getDiscoDate());
 				afficher("Saisir la Date de retrait du le marché (AAAA-MM-dd)");
-				tabRep[3] = (sc.nextLine());
+				tabRep[3] = (scanner.nextLine());
 
 				afficher("Id companie Actuel : " + comp.get().getCompany().getId());
 				afficher("Saisir l'id de la companie ");
@@ -231,7 +231,7 @@ public class CLI {
 				afficher(c);
 			}
 			afficher("appuyer sur [Entrée]");
-			sc.nextLine();
+			scanner.nextLine();
 			afficher("----------------------------------");
 			currentRow += 20;
 
@@ -272,7 +272,7 @@ public class CLI {
 			}
 
 			try {
-				rep = sc.nextLine();
+				rep = scanner.nextLine();
 
 				repEnInt = Integer.parseInt(rep);
 
@@ -298,7 +298,7 @@ public class CLI {
 			do {
 
 				try {
-					rep = sc.nextLine();
+					rep = scanner.nextLine();
 
 					repEnInt = Integer.parseInt(rep);
 
@@ -323,7 +323,7 @@ public class CLI {
 			do {
 
 				try {
-					rep = sc.nextLine();
+					rep = scanner.nextLine();
 
 					repEnInt = Integer.parseInt(rep);
 
