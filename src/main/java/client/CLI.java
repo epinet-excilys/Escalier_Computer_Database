@@ -10,7 +10,9 @@ import java.util.Scanner;
 import model.Company;
 import model.Computer;
 import service.ComputerDAOImpl;
+import service.ComputerDAOService;
 import service.CompanyDAOImpl;
+import service.CompanyDAOService;
 import mapper.ComputerMapper;
 import dao.ComputerDAO;
 import exception.Logging;;
@@ -21,11 +23,8 @@ public class CLI {
 	private String[] tabRep = { "", "", "", "", "" };
 	private boolean flagContinue;
 	private final int TAILLE_PAGE = 20;
-	private final String BDD_ADD_LOG = "Impossible d'ajouter le computer en BDD";
-	private final String BDD_MOD_LOG = "Impossible de modifier le computer en BDD";
-	private final String PARSE_LOG = "Impossible de Parser la date fournit";
-	private final String SQL_LOG = "SQL erreur";
-
+	
+	
 	public CLI() {
 		scanner = new Scanner(System.in);
 
@@ -90,7 +89,7 @@ public class CLI {
 
 		afficher("Vous allez saisir les valeurs champs par champs");
 
-		int i = (ComputerDAOImpl.getInstance().getNbRows() + 1);
+		int i = (ComputerDAOService.getInstance().getNbRows() + 1);
 
 		String passage_1 = "" + i + "";
 
@@ -108,29 +107,22 @@ public class CLI {
 		afficher("Saisir l'id de la companie ");
 		tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
 
-		try {
-			computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
-		} catch (ParseException e1) {
-			Logging.getLog().error(PARSE_LOG + e1.getMessage());
-		} catch (SQLException e2) {
-			Logging.getLog().error(SQL_LOG + e2.getMessage());
-		}
+		computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
+		
 		tabRep = new String[5];
 
 		afficher(computer);
 
-		try {
+
 			ComputerDAO.getInstance().create(computer);
-		} catch (SQLException e1) {
-			Logging.getLog().error(BDD_ADD_LOG + e1.getMessage());
-		}
+
 	}
 
 	public void modifComput() {
 		int commandeId = scannerIdComput("afficher");
 
 		if (commandeId != -1) {
-			Optional<Computer> comp = ComputerDAOImpl.getInstance().find(commandeId);
+			Optional<Computer> comp = ComputerDAOService.getInstance().findByID(commandeId);
 			if (comp.isPresent()) {
 
 				tabRep[0] = String.valueOf(comp.get().getId());
@@ -139,7 +131,7 @@ public class CLI {
 				afficher("Saisir le nouveau nom");
 				tabRep[1] = (scanner.nextLine());
 
-				afficher("Intro Date Actuel : " + comp.get().getIntronducedDate());
+				afficher("Intro Date Actuel : " + comp.get().getIntroducedDate());
 				afficher("Saisir la Date d'introduction sur le marché (AAAA-MM-dd)");
 				tabRep[2] = (scanner.nextLine());
 
@@ -151,24 +143,15 @@ public class CLI {
 				afficher("Saisir l'id de la companie ");
 				tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
 
-				Computer computer = null;
-				try {
-					computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
-				} catch (ParseException e1) {
-					Logging.getLog().error(PARSE_LOG + e1.getMessage());
-				} catch (SQLException e2) {
-					Logging.getLog().error(SQL_LOG + e2.getMessage());
-				}
-				tabRep = null;
+				Computer computer = new Computer.Builder().build();
+				computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
+				
+				tabRep = new String[5];
 
 				afficher(computer);
-
-				try {
-					ComputerDAO.getInstance().update(computer);
-				} catch (SQLException e) {
-					Logging.displayError(BDD_MOD_LOG);
-				}
-
+				
+				ComputerDAO.getInstance().update(computer);
+			
 			} else {
 				afficher("Pas de Correspondance en Base");
 			}
@@ -183,10 +166,10 @@ public class CLI {
 
 		if (commandeId != -1) {
 
-			Computer comp = ComputerDAOImpl.getInstance().find(commandeId).get();
+			Computer comp = ComputerDAOService.getInstance().findByID(commandeId).get();
 			afficher(comp);
 
-			ComputerDAOImpl.getInstance().delete(comp);
+			ComputerDAOService.getInstance().delete(comp);
 		} else {
 			afficher("Pas de Correspondance en Base");
 		}
@@ -198,7 +181,7 @@ public class CLI {
 		int commandeId = scannerIdComput("afficher");
 
 		if (commandeId != -1) {
-			Optional<Computer> comp = ComputerDAOImpl.getInstance().find(commandeId);
+			Optional<Computer> comp = ComputerDAOService.getInstance().findByID(commandeId);
 			if (comp.isPresent()) {
 				afficher(comp);
 			} else {
@@ -210,7 +193,7 @@ public class CLI {
 	}
 
 	public void affiAllComput() {
-		List<Computer> list = ComputerDAOImpl.getInstance().getAllComput();
+		List<Computer> list = ComputerDAOService.getInstance().getAllComput();
 
 		for (Computer c : list) {
 			afficher(c);
@@ -219,11 +202,11 @@ public class CLI {
 	}
 
 	public void affiAllPaginateComput() {
-		int nbTotalRows = ComputerDAOImpl.getInstance().getNbRows();
+		int nbTotalRows = ComputerDAOService.getInstance().getNbRows();
 		int currentRow = 0;
 
 		do {
-			List<Computer> list = ComputerDAOImpl.getInstance().getAllPaginateComput(currentRow, TAILLE_PAGE);
+			List<Computer> list = ComputerDAOService.getInstance().getAllPaginateComput(currentRow, TAILLE_PAGE);
 			for (Computer c : list) {
 				afficher(c);
 			}
@@ -240,7 +223,7 @@ public class CLI {
 	// Compan-----------------------------------------------------------------------------------
 
 	public void affiAllCompan() {
-		List<Company> list = CompanyDAOImpl.getInstance().getAllComput().get();
+		List<Company> list = CompanyDAOService.getInstance().getAllComput();
 
 		for (Company c : list) {
 			afficher(c);
@@ -287,7 +270,7 @@ public class CLI {
 
 	// TODO Modifier
 	public int scannerIdComput(String personnalisation) {
-		int valMaxId = ComputerDAOImpl.getInstance().getNbRows();
+		int valMaxId = ComputerDAOService.getInstance().getNbRows();
 		int repEnInt = -1;
 		String rep = "";
 		if (valMaxId != -1) {
@@ -313,7 +296,7 @@ public class CLI {
 
 	// TODO MODFIER
 	public int scannerIdCompan(String personnalisation) {
-		int valMaxId = CompanyDAOImpl.getInstance().getNbRows();
+		int valMaxId = CompanyDAOService.getInstance().getNbRows();
 		int repEnInt = -1;
 		String rep = "";
 		if (valMaxId != -1) {

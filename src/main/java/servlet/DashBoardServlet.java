@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,14 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dto.ComputerDTO;
-import exception.Logging;
 import mapper.ComputerMapper;
 import model.Computer;
-import service.ComputerDAOImpl;
+import service.ComputerDAOService;
 
-/**
- * Servlet implementation class DashBoardServlet
- */
+
 @WebServlet(name = "DashBoardServlet", urlPatterns = "/DashBoard")
 public class DashBoardServlet extends HttpServlet {
 	private int pageIterator = 0;
@@ -29,22 +27,22 @@ public class DashBoardServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		NbRowComputer = ComputerDAOImpl.getInstance().getNbRows();
+		NbRowComputer = ComputerDAOService.getInstance().getNbRows();
 
 		maxPage = NbRowComputer / pageSize;
 		while (NbRowComputer % maxPage != 0) {
 			maxPage++;
 		}
-		ArrayList<Computer> computerList = new ArrayList<Computer>();
-		ArrayList<ComputerDTO> computerDTOList = new ArrayList<ComputerDTO>();
+		
+		List<Computer> computerList = new ArrayList<>();
+		List<ComputerDTO> computerDTOList = new ArrayList<>();
 
 		if (request.getParameter("taillePage") != null) {
 			pageSize = Integer.parseInt(request.getParameter("taillePage"));
 		}
 		if (request.getParameter("pageIterator") != null) {
 			pageIterator = Integer.parseInt(request.getParameter("pageIterator"));
-			computerList = ComputerDAOImpl.getInstance().getAllPaginateComput(pageIterator * pageSize, pageSize);
+			computerList = ComputerDAOService.getInstance().getAllPaginateComput(pageIterator * pageSize, pageSize);
 		} else {
 			pageIterator = 0;
 			computerList = ComputerDAOImpl.getInstance().getAllPaginateComput(0, 20);

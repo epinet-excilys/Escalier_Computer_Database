@@ -52,7 +52,7 @@ public final class ComputerDAOService {
 
 	//
 	public Optional<Computer> findByID(int ID) {
-		Optional<Computer> computer = null;
+		Optional<Computer> computer = Optional.empty();
 		computer = ComputerDAO.getInstance().findByID(ID);
 		return computer;
 	}

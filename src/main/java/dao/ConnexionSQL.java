@@ -17,7 +17,6 @@ public class ConnexionSQL {
 	private static volatile ConnexionSQL instance = null;
 
 	private static Properties connectionProperties;
-	private static String toWhichDatabaseAreWeConnected;
 	private static String url;
 	private static String user;
 	private static String password;
@@ -61,7 +60,6 @@ public class ConnexionSQL {
 			url = connectionProperties.getProperty("url");
 			user = connectionProperties.getProperty("user");
 			password = connectionProperties.getProperty("password");
-			toWhichDatabaseAreWeConnected = connectionProperties.getProperty("stateOfBDD");
 
 			Class.forName(driver);
 

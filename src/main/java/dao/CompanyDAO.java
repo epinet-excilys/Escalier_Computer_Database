@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import exception.Logging;
 
 import java.sql.PreparedStatement;
@@ -22,8 +25,9 @@ public final class CompanyDAO {
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM company;";
 
 	private static ConnexionSQL connection = ConnexionSQL.getInstance();
+	public static Logger LOGGER = LoggerFactory.getLogger(ConnexionSQL.class);
 
-	private final static String bddAccessLog = "Impossible d'acceder à la BDD niveau DAO";
+	private final static String BDD_ACCESS_LOG = "Impossible d'acceder à la BDD niveau DAO";
 
 	private CompanyDAO() {
 		super();
@@ -51,7 +55,7 @@ public final class CompanyDAO {
 				}
 			}
 		} catch (SQLException e1) {
-			Logging.getLog().error(bddAccessLog + e1.getMessage());
+			LOGGER.error(BDD_ACCESS_LOG + e1.getMessage());
 		}
 		return Optional.ofNullable(company);
 	}
@@ -69,7 +73,7 @@ public final class CompanyDAO {
 				}
 			}
 		} catch (SQLException e1) {
-			Logging.getLog().error(bddAccessLog + e1.getMessage());
+			LOGGER.error(BDD_ACCESS_LOG + e1.getMessage());
 		}
 		return listCompany;
 	}
@@ -88,7 +92,7 @@ public final class CompanyDAO {
 			}
 
 		} catch (SQLException e1) {
-			Logging.getLog().error(bddAccessLog + e1.getMessage());
+			LOGGER.error(BDD_ACCESS_LOG + e1.getMessage());
 		}
 
 		return nbRow;

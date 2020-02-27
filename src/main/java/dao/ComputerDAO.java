@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import exception.Logging;
 import mapper.ComputerMapper;
 import model.Computer;
@@ -32,6 +35,7 @@ public final class ComputerDAO {
 	private static final String BDD_NULL_OBJECT_LOG = "Tentative de manipulation d'un objet null";
 
 	private static ConnexionSQL connection = ConnexionSQL.getInstance();
+	public static Logger LOGGER = LoggerFactory.getLogger(ConnexionSQL.class);
 
 	private ComputerDAO() {
 		super();
@@ -72,9 +76,9 @@ public final class ComputerDAO {
 				nbOfRowInsertedInDB = stmt.executeUpdate();
 
 			} catch (SQLException e1) {
-				Logging.getLog().error(BDD_ACCESS_LOG + e1.getMessage());
+				LOGGER.error(BDD_ACCESS_LOG + e1.getMessage());
 			} catch (NullPointerException e2) {
-				Logging.getLog().error(BDD_NULL_OBJECT_LOG + e2.getMessage());
+				LOGGER.error(BDD_NULL_OBJECT_LOG + e2.getMessage());
 			}
 		}
 		return nbOfRowInsertedInDB;
@@ -89,7 +93,7 @@ public final class ComputerDAO {
 			nbOfDeletedRowsinDB = stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			Logging.getLog().error(BDD_ACCESS_LOG);
+			LOGGER.error(BDD_ACCESS_LOG);
 		}
 		return nbOfDeletedRowsinDB;
 	}
@@ -111,9 +115,9 @@ public final class ComputerDAO {
 				nbOfUpdatedRowsinDB = stmt.executeUpdate();
 
 			} catch (SQLException e1) {
-				Logging.getLog().error(BDD_ACCESS_LOG + e1.getMessage());
+				LOGGER.error(BDD_ACCESS_LOG + e1.getMessage());
 			} catch (NullPointerException e2) {
-				Logging.getLog().error(BDD_NULL_OBJECT_LOG + e2.getMessage());
+				LOGGER.error(BDD_NULL_OBJECT_LOG + e2.getMessage());
 			}
 		}
 		return nbOfUpdatedRowsinDB;
@@ -135,7 +139,7 @@ public final class ComputerDAO {
 			}
 
 		} catch (SQLException e1) {
-			Logging.getLog().error(BDD_ACCESS_LOG + e1.getMessage());
+			LOGGER.error(BDD_ACCESS_LOG + e1.getMessage());
 		}
 		return computer;
 	}
@@ -152,7 +156,7 @@ public final class ComputerDAO {
 				}
 			}
 		} catch (SQLException e) {
-			Logging.getLog().error(BDD_ACCESS_LOG);
+			LOGGER.error(BDD_ACCESS_LOG);
 		}
 		return computerList;
 	}
@@ -171,7 +175,7 @@ public final class ComputerDAO {
 				}
 			}
 		} catch (SQLException e) {
-			Logging.getLog().error(BDD_ACCESS_LOG);
+			LOGGER.error(BDD_ACCESS_LOG);
 		}
 		return computerList;
 	}
@@ -186,7 +190,7 @@ public final class ComputerDAO {
 				}
 			}
 		} catch (SQLException e) {
-			Logging.getLog().error(BDD_ACCESS_LOG);
+			LOGGER.error(BDD_ACCESS_LOG);
 		}
 		return nbRow;
 	}
