@@ -18,6 +18,7 @@ import service.ComputerDAOService;
 
 @WebServlet(name = "DashBoardServlet", urlPatterns = "/DashBoard")
 public class DashBoardServlet extends HttpServlet {
+	
 	private int pageIterator = 0;
 	private int pageSize = 20;
 	private int maxPage = 0;
@@ -27,16 +28,17 @@ public class DashBoardServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		NbRowComputer = ComputerDAOService.getInstance().getNbRows();
-
-		maxPage = NbRowComputer / pageSize;
-		while (NbRowComputer % maxPage != 0) {
-			maxPage++;
-		}
+		
 		
 		List<Computer> computerList = new ArrayList<>();
 		List<ComputerDTO> computerDTOList = new ArrayList<>();
+		
+		
+		NbRowComputer = ComputerDAOService.getInstance().getNbRows();
 
+		//TODO REVOIR CE PASSAGE POUR ARRONDIR LE NOMBRE
+		maxPage = NbRowComputer / pageSize;
+		
 		if (request.getParameter("taillePage") != null) {
 			pageSize = Integer.parseInt(request.getParameter("taillePage"));
 		}
@@ -48,12 +50,13 @@ public class DashBoardServlet extends HttpServlet {
 			computerList = ComputerDAOService.getInstance().getAllPaginateComput(0, 20);
 		}
 
+//		computerList = paginate(request);
+
 		computerList.stream().forEach(
 				computer -> computerDTOList.add(ComputerMapper.getInstance().fromComputerToComputerDTO(computer)));
 
 		request.setAttribute("maxPage", maxPage);
 		request.setAttribute("pageIterator", pageIterator);
-
 		request.setAttribute("NbRowComputer", NbRowComputer);
 		request.setAttribute("computerList", computerList);
 		request.getRequestDispatcher(DASHBOARD).forward(request, response);
@@ -67,6 +70,14 @@ public class DashBoardServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private List<Computer> paginate(HttpServletRequest request) {
+		List<Computer> computerList = new ArrayList<>();
+	
+		
+		return computerList;
+		
 	}
 
 }

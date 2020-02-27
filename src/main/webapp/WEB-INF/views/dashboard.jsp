@@ -112,13 +112,11 @@
 							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 						</a>
 					</c:if></li>
-				<c:if test="${pageIterator < maxPage}">
-					<c:forEach var="i" begin="1" end="3">
-						<li><a href="DashBoard?pageIterator=${pageIterator+i}"><c:out
-									value="${pageIterator+i}"></c:out></a></li>
-					</c:forEach>
-				</c:if>
-				<li><c:if test="${pageIterator < maxPage}">
+				<li><c:if test="${pageIterator = maxPage}">
+						<a href="DashBoard?pageIterator=${pageIterator}"><c:out
+								value="${pageIterator}"></c:out> </a>
+					</c:if></li>
+				<li><c:if test="${pageIterator =  maxPage}">
 						<a href="DashBoard?pageIterator=${pageIterator+1}"
 							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 						</a>

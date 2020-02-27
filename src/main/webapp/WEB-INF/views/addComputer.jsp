@@ -19,7 +19,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
+			<a class="navbar-brand" href="DashBoard"> Application -
 				Computer Database </a>
 		</div>
 	</header>
@@ -34,7 +34,7 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
-									placeholder="Computer name">
+									placeholder="Computer name" required>
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
@@ -50,12 +50,16 @@
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId">
 									<option value="0">--</option>
+									<c:forEach items="${companyDTOList}" var="companyDTO">
+										<option value="${companyDTO.getId()}"><c:out
+												value="${companyDTO.getName()}" /></option>
+									</c:forEach>
 								</select>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" class="btn btn-primary">
-							or <a href="dashboard.html" class="btn btn-default">Cancel</a>
+							or <a href="DashBoard" class="btn btn-default">Cancel</a>
 						</div>
 					</form>
 				</div>
