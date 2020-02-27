@@ -94,7 +94,7 @@ public final class ComputerDAO {
 		return nbOfDeletedRowsinDB;
 	}
 
-	public int update(Computer computer) throws SQLException {
+	public int update(Computer computer){
 		int nbOfUpdatedRowsinDB = 0;
 
 		if (computer != null) {

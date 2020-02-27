@@ -24,7 +24,7 @@ public class CLI {
 	private final String BDD_ADD_LOG = "Impossible d'ajouter le computer en BDD";
 	private final String BDD_MOD_LOG = "Impossible de modifier le computer en BDD";
 	private final String PARSE_LOG = "Impossible de Parser la date fournit";
-	private final String SQL_LOG = "SQL erreur";	
+	private final String SQL_LOG = "SQL erreur";
 
 	public CLI() {
 		scanner = new Scanner(System.in);
@@ -91,7 +91,7 @@ public class CLI {
 		afficher("Vous allez saisir les valeurs champs par champs");
 
 		int i = (ComputerDAOImpl.getInstance().getNbRows() + 1);
-		
+
 		String passage_1 = "" + i + "";
 
 		tabRep[0] = (passage_1);
@@ -111,7 +111,7 @@ public class CLI {
 		try {
 			computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
 		} catch (ParseException e1) {
-			logger.error(PARSE_LOG + e1.getMessage());
+			Logging.getLog().error(PARSE_LOG + e1.getMessage());
 		} catch (SQLException e2) {
 			Logging.getLog().error(SQL_LOG + e2.getMessage());
 		}
@@ -155,9 +155,9 @@ public class CLI {
 				try {
 					computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
 				} catch (ParseException e1) {
-					Logging.(PARSE_LOG);
+					Logging.getLog().error(PARSE_LOG + e1.getMessage());
 				} catch (SQLException e2) {
-					Logging.displayError(SQL_LOG);
+					Logging.getLog().error(SQL_LOG + e2.getMessage());
 				}
 				tabRep = null;
 

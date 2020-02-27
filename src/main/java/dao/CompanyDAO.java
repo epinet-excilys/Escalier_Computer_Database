@@ -30,9 +30,7 @@ public final class CompanyDAO {
 	}
 
 	public final static CompanyDAO getInstance() {
-
 		if (CompanyDAO.instance == null) {
-
 			synchronized (CompanyDAO.class) {
 				if (CompanyDAO.instance == null) {
 					CompanyDAO.instance = new CompanyDAO();
@@ -71,31 +69,28 @@ public final class CompanyDAO {
 				}
 			}
 		} catch (SQLException e1) {
-			Logging.getLog().error(bddAccessLog);
+			Logging.getLog().error(bddAccessLog + e1.getMessage());
 		}
 		return listCompany;
 	}
 
 	public int getNbRow() throws SQLException {
-		int a = 0;
-
-		try (Connection connect = ConnexionSQL.getConn();
+		int nbRow = 0;
+		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getNbRowsStatement);) {
+			try (ResultSet result = stmt.executeQuery()) {
 
-			result = stmt.executeQuery();
+				if (result.first()) {
+					nbRow = result.getInt("Rows");
 
-			if (result.first()) {
-				a = result.getInt("Rows");
-
+				}
 			}
 
-		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
-		} finally {
-			result.close();
+		} catch (SQLException e1) {
+			Logging.getLog().error(bddAccessLog + e1.getMessage());
 		}
 
-		return a;
+		return nbRow;
 
 	}
 
