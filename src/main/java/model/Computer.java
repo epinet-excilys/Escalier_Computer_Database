@@ -34,7 +34,7 @@ public class Computer {
 		this.name = name;
 	}
 
-	public LocalDate getIntronducedDate() {
+	public LocalDate getIntroducedDate() {
 		return introducedDate;
 	}
 
@@ -42,7 +42,7 @@ public class Computer {
 		this.introducedDate = introDate;
 	}
 
-	public LocalDate getDiscondtinuedDate() {
+	public LocalDate getDiscontinuedDate() {
 		return discontinuedDate;
 	}
 

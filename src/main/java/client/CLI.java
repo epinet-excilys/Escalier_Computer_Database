@@ -24,7 +24,7 @@ public class CLI {
 	private final String BDD_ADD_LOG = "Impossible d'ajouter le computer en BDD";
 	private final String BDD_MOD_LOG = "Impossible de modifier le computer en BDD";
 	private final String PARSE_LOG = "Impossible de Parser la date fournit";
-	private final String SQL_LOG = "SQL erreur";
+	private final String SQL_LOG = "SQL erreur";	
 
 	public CLI() {
 		scanner = new Scanner(System.in);
@@ -86,11 +86,12 @@ public class CLI {
 
 	public void addComput() {
 
-		Computer computer = ;
+		Computer computer = new Computer.Builder().build();
 
 		afficher("Vous allez saisir les valeurs champs par champs");
 
 		int i = (ComputerDAOImpl.getInstance().getNbRows() + 1);
+		
 		String passage_1 = "" + i + "";
 
 		tabRep[0] = (passage_1);
@@ -107,22 +108,21 @@ public class CLI {
 		afficher("Saisir l'id de la companie ");
 		tabRep[4] = String.valueOf(scannerIdCompan("ajoutez"));
 
-		Computer computer = null;
 		try {
 			computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
 		} catch (ParseException e1) {
-			Logging.getLog().error(PARSE_LOG + e1.getMessage());
+			logger.error(PARSE_LOG + e1.getMessage());
 		} catch (SQLException e2) {
 			Logging.getLog().error(SQL_LOG + e2.getMessage());
 		}
-		tabRep = null;
+		tabRep = new String[5];
 
 		afficher(computer);
 
 		try {
 			ComputerDAO.getInstance().create(computer);
-		} catch (SQLException e) {
-			Logging.displayError(BDD_ADD_LOG);
+		} catch (SQLException e1) {
+			Logging.getLog().error(BDD_ADD_LOG + e1.getMessage());
 		}
 	}
 
@@ -139,11 +139,11 @@ public class CLI {
 				afficher("Saisir le nouveau nom");
 				tabRep[1] = (scanner.nextLine());
 
-				afficher("Intro Date Actuel : " + comp.get().getIntroDate());
+				afficher("Intro Date Actuel : " + comp.get().getIntronducedDate());
 				afficher("Saisir la Date d'introduction sur le marché (AAAA-MM-dd)");
 				tabRep[2] = (scanner.nextLine());
 
-				afficher("Disco Date Actuel : " + comp.get().getDiscoDate());
+				afficher("Disco Date Actuel : " + comp.get().getDiscontinuedDate());
 				afficher("Saisir la Date de retrait du le marché (AAAA-MM-dd)");
 				tabRep[3] = (scanner.nextLine());
 
@@ -154,9 +154,9 @@ public class CLI {
 				Computer computer = null;
 				try {
 					computer = ComputerMapper.getInstance().fromStringToComput(tabRep);
-				} catch (ParseException parseEx) {
-					Logging.displayError(PARSE_LOG);
-				} catch (SQLException sqlEx) {
+				} catch (ParseException e1) {
+					Logging.(PARSE_LOG);
+				} catch (SQLException e2) {
 					Logging.displayError(SQL_LOG);
 				}
 				tabRep = null;

@@ -1,10 +1,10 @@
 package dao;
 
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import exception.Logging;
@@ -12,9 +12,8 @@ import exception.Logging;
 import java.sql.PreparedStatement;
 
 import mapper.CompanyMapper;
-import model.*;
+import model.Company;
 
-// A FAIRE
 public final class CompanyDAO {
 
 	private static volatile CompanyDAO instance = null;
@@ -22,8 +21,8 @@ public final class CompanyDAO {
 	private final String getAllStatement = "SELECT company.id, company.name FROM company";
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM company;";
 
+	private static ConnexionSQL connection = ConnexionSQL.getInstance();
 
-	
 	private final static String bddAccessLog = "Impossible d'acceder à la BDD niveau DAO";
 
 	private CompanyDAO() {
@@ -41,66 +40,40 @@ public final class CompanyDAO {
 			}
 		}
 		return CompanyDAO.instance;
-
 	}
 
-	public void create(Company obj) {
-	}
-
-	public void delete(Company obj) {
-	}
-
-	public void update(Company obj) {
-	}
-
-	public Optional<Company> find(int i) throws SQLException {
-
-		Company company = new Company.builder().build();
-		private ResultSet result;
-		
-		try (Connection connect = ConnexionSQL.getConn();
+	public Optional<Company> findByID(int idSearch) {
+		Company company = new Company.Builder().build();
+		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getStatement);) {
-
-			stmt.setInt(1, i);
-
-			result = stmt.executeQuery();
-
-			if (result.first()) {
-				company = CompanyMapper.getInstance().getCompanyFromResultSet(result);
+			stmt.setInt(1, idSearch);
+			try (ResultSet result = stmt.executeQuery()) {
+				if (result.first()) {
+					company = CompanyMapper.getInstance().getCompanyFromResultSet(result);
+				}
 			}
-		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
-		} finally {
-			result.close();
+		} catch (SQLException e1) {
+			Logging.getLog().error(bddAccessLog + e1.getMessage());
 		}
-
 		return Optional.ofNullable(company);
 	}
 
-	public Optional<ArrayList<Company>> findAll() throws SQLException {
-
-		ArrayList<Company> list = new ArrayList<Company>();
-		Company company;
-		private ResultSet result;
-		
-		try (Connection connect = ConnexionSQL.getConn();
+	public List<Company> findAll() throws SQLException {
+		List<Company> listCompany = new ArrayList<>();
+		Company company = new Company.Builder().build();
+		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getAllStatement);) {
+			try (ResultSet result = stmt.executeQuery()) {
+				while (result.next()) {
+					company = CompanyMapper.getInstance().getCompanyFromResultSet(result);
 
-			result = stmt.executeQuery();
-
-			while (result.next()) {
-				company = CompanyMapper.getInstance().getCompanyFromResultSet(result);
-
-				list.add(company);
+					listCompany.add(company);
+				}
 			}
-
-		} catch (SQLException e) {
-			Logging.displayError(bddAccessLog);
-		} finally {
-			result.close();
+		} catch (SQLException e1) {
+			Logging.getLog().error(bddAccessLog);
 		}
-
-		return Optional.ofNullable(list);
+		return listCompany;
 	}
 
 	public int getNbRow() throws SQLException {

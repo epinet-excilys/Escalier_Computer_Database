@@ -1,23 +1,18 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import java.util.List;
 import java.util.Optional;
 
 import exception.Logging;
-
-import java.sql.Date;
-import java.sql.PreparedStatement;
-
 import mapper.ComputerMapper;
-import model.*;
+import model.Computer;
 
 public final class ComputerDAO {
 
@@ -33,13 +28,11 @@ public final class ComputerDAO {
 	private final String getAllPaginateStatement = "SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.name FROM computer LEFT JOIN company ON company_id = company.id LIMIT ?, ?;";
 	private final String getNbRowsStatement = "SELECT COUNT(*) as \"Rows\" FROM computer;";
 
-	private ResultSet result;
-
 	private static final String BDD_ACCESS_LOG = "Impossible de se connecter à la  BDD niveau DAO";
 	private static final String BDD_NULL_OBJECT_LOG = "Tentative de manipulation d'un objet null";
 
-	Connection conection;
-	
+	private static ConnexionSQL connection = ConnexionSQL.getInstance();
+
 	private ComputerDAO() {
 		super();
 
@@ -59,168 +52,143 @@ public final class ComputerDAO {
 		return ComputerDAO.instance;
 	}
 
-	public int create(Computer computer) throws SQLException {
-		int valueOfPreparedStatement = 0;
+	public int create(Computer computer) {
+		int nbOfRowInsertedInDB = 0;
 
 		if (computer != null) {
-			try (Connection connect = ConnexionSQL.getConn();
+			try (Connection connect = connection.getConn();
 					PreparedStatement stmt = connect.prepareStatement(createStatement);) {
 				stmt.setString(1, computer.getName());
 				stmt.setTimestamp(2,
-						computer.getIntroDate() != null
-								? Timestamp.valueOf(computer.getIntroDate().atTime(LocalTime.MIDNIGHT))
+						computer.getIntroducedDate() != null
+								? Timestamp.valueOf(computer.getIntroducedDate().atTime(LocalTime.MIDNIGHT))
 								: null);
 				stmt.setTimestamp(3,
-						computer.getDiscoDate() != null
-								? Timestamp.valueOf(computer.getDiscoDate().atTime(LocalTime.MIDNIGHT))
+						computer.getDiscontinuedDate() != null
+								? Timestamp.valueOf(computer.getDiscontinuedDate().atTime(LocalTime.MIDNIGHT))
 								: null);
 				stmt.setInt(4, computer.getCompany().getId());
 
-				valueOfPreparedStatement = stmt.executeUpdate();
+				nbOfRowInsertedInDB = stmt.executeUpdate();
 
-			} catch (SQLException e) {
-				Logging.getLog().error(BDD_ACCESS_LOG);
-			} catch (NullPointerException e) {
-				Logging.getLog().error(BDD_NULL_OBJECT_LOG);
+			} catch (SQLException e1) {
+				Logging.getLog().error(BDD_ACCESS_LOG + e1.getMessage());
+			} catch (NullPointerException e2) {
+				Logging.getLog().error(BDD_NULL_OBJECT_LOG + e2.getMessage());
 			}
 		}
-		return valueOfPreparedStatement;
+		return nbOfRowInsertedInDB;
 
 	}
 
-	public int delete(int idSuppression) throws SQLException {
-		int valueOfPreparedStatement = 0;
-		try (Connection connect = ConnexionSQL.getConn();
+	public int delete(int idSuppression) {
+		int nbOfDeletedRowsinDB = 0;
+		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(deleteStatement);) {
 			stmt.setInt(1, idSuppression);
-			valueOfPreparedStatement = stmt.executeUpdate();
+			nbOfDeletedRowsinDB = stmt.executeUpdate();
 
 		} catch (SQLException e) {
 			Logging.getLog().error(BDD_ACCESS_LOG);
 		}
-		return valueOfPreparedStatement;
+		return nbOfDeletedRowsinDB;
 	}
 
 	public int update(Computer computer) throws SQLException {
-		int valueOfPreparedStatement = 0;
+		int nbOfUpdatedRowsinDB = 0;
 
 		if (computer != null) {
-			try (Connection connect = ConnexionSQL.getConn();
+			try (Connection connect = connection.getConn();
 					PreparedStatement stmt = connect.prepareStatement(updateStatement);) {
 
 				stmt.setInt(5, computer.getId());
 
 				stmt.setString(1, computer.getName());
-				stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroDate().atTime(LocalTime.MIDNIGHT)));
-				stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscoDate().atTime(LocalTime.MIDNIGHT)));
+				stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroducedDate().atTime(LocalTime.MIDNIGHT)));
+				stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinuedDate().atTime(LocalTime.MIDNIGHT)));
 				stmt.setInt(4, computer.getCompany().getId());
 
-				valueOfPreparedStatement = stmt.executeUpdate();
+				nbOfUpdatedRowsinDB = stmt.executeUpdate();
 
-			} catch (SQLException e) {
-				Logging.getLog().error(BDD_ACCESS_LOG);
-			} catch (NullPointerException e) {
-				Logging.getLog().error(BDD_NULL_OBJECT_LOG);
+			} catch (SQLException e1) {
+				Logging.getLog().error(BDD_ACCESS_LOG + e1.getMessage());
+			} catch (NullPointerException e2) {
+				Logging.getLog().error(BDD_NULL_OBJECT_LOG + e2.getMessage());
 			}
 		}
-		return valueOfPreparedStatement;
+		return nbOfUpdatedRowsinDB;
 
 	}
 
-	public Optional<Computer> find(int idSearch) throws SQLException, NoSuchElementException {
-
+	public Optional<Computer> findByID(int idSearch) {
 		Optional<Computer> computer = Optional.empty();
-
-		try (Connection connect = ConnexionSQL.getConn();
+		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getStatement);) {
 			stmt.setInt(1, idSearch);
-			result = stmt.executeQuery();
 
-			if (result.first()) {
-				computer = ComputerMapper.getInstance().getComputerFromResultSet(result);
+			try (ResultSet result = stmt.executeQuery()) {
 
+				if (result.first()) {
+					computer = ComputerMapper.getInstance().getComputerFromResultSet(result);
+
+				}
 			}
 
-		} catch (SQLException e) {
-			Logging.getLog().error(BDD_ACCESS_LOG);
-		} finally {
-			result.close();
+		} catch (SQLException e1) {
+			Logging.getLog().error(BDD_ACCESS_LOG + e1.getMessage());
 		}
-
 		return computer;
 	}
 
-	public ArrayList<Computer> findAll() throws SQLException {
-
-		ArrayList<Computer> arrayList = new ArrayList<Computer>();
-		Computer computer;
-
-		try (Connection connect = ConnexionSQL.getConn();
+	public List<Computer> findAll() {
+		List<Computer> computerList = new ArrayList<>();
+		Computer computer = new Computer.Builder().build();
+		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getAllStatement);) {
-
-			result = stmt.executeQuery();
-			while (result.next()) {
-				computer = ComputerMapper.getInstance().getComputerFromResultSet(result).get();
-				arrayList.add(computer);
+			try (ResultSet result = stmt.executeQuery();) {
+				while (result.next()) {
+					computer = ComputerMapper.getInstance().getComputerFromResultSet(result).get();
+					computerList.add(computer);
+				}
 			}
-
 		} catch (SQLException e) {
 			Logging.getLog().error(BDD_ACCESS_LOG);
-		} finally {
-			result.close();
-
 		}
-
-		return arrayList;
+		return computerList;
 	}
 
-	public ArrayList<Computer> findAllPaginate(int ligneDebutOffSet, int taillePage) throws SQLException {
-
-		ArrayList<Computer> arrayList = new ArrayList<Computer>();
-		Computer computer;
-
-		try (Connection connect = ConnexionSQL.getConn();
+	public List<Computer> findAllPaginate(int ligneDebutOffSet, int taillePage) {
+		List<Computer> computerList = new ArrayList<>();
+		Computer computer = new Computer.Builder().build();
+		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getAllPaginateStatement);) {
 			stmt.setInt(1, ligneDebutOffSet);
 			stmt.setInt(2, taillePage);
-			
-			result = stmt.executeQuery();
-			while (result.next()) {
-				computer = ComputerMapper.getInstance().getComputerFromResultSet(result).get();
-				arrayList.add(computer);
+			try (ResultSet result = stmt.executeQuery()) {
+				while (result.next()) {
+					computer = ComputerMapper.getInstance().getComputerFromResultSet(result).get();
+					computerList.add(computer);
+				}
 			}
-
 		} catch (SQLException e) {
 			Logging.getLog().error(BDD_ACCESS_LOG);
-		} finally {
-			result.close();
-
 		}
-
-		return arrayList;
+		return computerList;
 	}
 
 	public int getNbRow() throws SQLException {
 		int nbRow = -1;
-
-		try (Connection connect = ConnexionSQL.getConn();
+		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getNbRowsStatement);) {
-			result = stmt.executeQuery();
-
-			if (result.first()) {
-				nbRow = result.getInt("Rows");
-
+			try (ResultSet result = stmt.executeQuery()) {
+				if (result.first()) {
+					nbRow = result.getInt("Rows");
+				}
 			}
-
 		} catch (SQLException e) {
-
 			Logging.getLog().error(BDD_ACCESS_LOG);
-		} finally {
-			result.close();
 		}
-
 		return nbRow;
-
 	}
 
 }
