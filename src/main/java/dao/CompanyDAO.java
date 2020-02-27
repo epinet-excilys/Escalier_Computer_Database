@@ -56,7 +56,7 @@ public final class CompanyDAO {
 		return Optional.ofNullable(company);
 	}
 
-	public List<Company> findAll() throws SQLException {
+	public List<Company> findAll() {
 		List<Company> listCompany = new ArrayList<>();
 		Company company = new Company.Builder().build();
 		try (Connection connect = connection.getConn();
@@ -74,7 +74,7 @@ public final class CompanyDAO {
 		return listCompany;
 	}
 
-	public int getNbRow() throws SQLException {
+	public int getNbRow() {
 		int nbRow = 0;
 		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getNbRowsStatement);) {

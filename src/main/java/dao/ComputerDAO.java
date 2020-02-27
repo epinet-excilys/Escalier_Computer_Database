@@ -176,7 +176,7 @@ public final class ComputerDAO {
 		return computerList;
 	}
 
-	public int getNbRow() throws SQLException {
+	public int getNbRow() {
 		int nbRow = -1;
 		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getNbRowsStatement);) {

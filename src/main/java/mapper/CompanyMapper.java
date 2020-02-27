@@ -32,7 +32,7 @@ public final class CompanyMapper {
 		int idComp = resultSet.getInt("id");
 		String nameComp = resultSet.getString("name");
 		
-		Company company = new Company.CompanyBuilder().setIdBuild(idComp).setNameBuild(nameComp).build();
+		Company company = new Company.Builder().setIdBuild(idComp).setNameBuild(nameComp).build();
 		
 		return company;
 		
