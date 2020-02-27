@@ -63,11 +63,6 @@ public class ConnexionSQL {
 			password = connectionProperties.getProperty("password");
 			toWhichDatabaseAreWeConnected = connectionProperties.getProperty("stateOfBDD");
 
-			System.out.println(driver);
-			System.out.println(url);
-
-			Logging.getLog().info((toWhichDatabaseAreWeConnected));
-
 			Class.forName(driver);
 
 			return DriverManager.getConnection(url, user, password);

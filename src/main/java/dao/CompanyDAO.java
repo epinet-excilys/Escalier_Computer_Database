@@ -78,6 +78,7 @@ public final class CompanyDAO {
 		int nbRow = 0;
 		try (Connection connect = connection.getConn();
 				PreparedStatement stmt = connect.prepareStatement(getNbRowsStatement);) {
+			
 			try (ResultSet result = stmt.executeQuery()) {
 
 				if (result.first()) {

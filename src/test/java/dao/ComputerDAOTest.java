@@ -158,8 +158,8 @@ public class ComputerDAOTest {
 	public void testFindComputerIntendeduse() {
 		Company company = new Company.Builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
 		Computer computer = new Computer.Builder().setIdBuild(1).setNameBuild("MacBook Pro 15.4 inch")
-				.setIntroducedDateBuild(LocalDate.now().minusYears(5))
-				.setDiscontinuedDateBuild(LocalDate.now().minusYears(1)).setIdCompagnyBuild(company).build();
+				.setIntroducedDateBuild(null)
+				.setDiscontinuedDateBuild(null).setIdCompagnyBuild(company).build();
 
 		try {
 			assertTrue(ComputerDAO.getInstance().findByID(1).get().equals(computer));
@@ -206,8 +206,6 @@ public class ComputerDAOTest {
 		List<Computer> computers = new ArrayList<>();
 		Company company1 = new Company.Builder().setIdBuild(1).setNameBuild("Apple Inc.").build();
 		Company company2 = new Company.Builder().setIdBuild(2).setNameBuild("Thinking Machines").build();
-		Company company3 = new Company.Builder().setIdBuild(1).setNameBuild("RCA").build();
-		Company company4 = new Company.Builder().setIdBuild(1).setNameBuild("Netronics").build();
 		Company companyNull = new Company.Builder().build();
 		Computer computer1 = new Computer.Builder().setIdBuild(1).setNameBuild("MacBook Pro 15.4 inch")
 				.setIntroducedDateBuild(null).setDiscontinuedDateBuild(null).setIdCompagnyBuild(company1).build();
