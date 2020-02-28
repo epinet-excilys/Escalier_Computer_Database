@@ -45,7 +45,7 @@ public class AddComputerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		
-//		ComputerDAOService computerDAOService = ComputerDAOService.getInstance();
+		ComputerDAOService computerDAOService = ComputerDAOService.getInstance();
 //		CompanyDAOService companyDAOService = CompanyDAOService.getInstance();
 //		
 //		String computerName = request.getParameter("computerName");
@@ -74,7 +74,7 @@ public class AddComputerServlet extends HttpServlet {
 //			
 //			
 //					
-//					
+			computerDAOService.add(computer);
 			System.out.println(computer);
 //			
 //		}

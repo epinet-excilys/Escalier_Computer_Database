@@ -1,5 +1,7 @@
 package client;
 
+import java.util.Arrays;
+
 public class Application {
 	
 	
@@ -9,7 +11,6 @@ public class Application {
 		CLI cli = new CLI();
 		
 		cli.demonstration();
-
 
 	}
 

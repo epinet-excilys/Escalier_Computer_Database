@@ -15,30 +15,26 @@ import mapper.ComputerMapper;
 import model.Computer;
 import service.ComputerDAOService;
 
-
 @WebServlet(name = "DashBoardServlet", urlPatterns = "/DashBoard")
 public class DashBoardServlet extends HttpServlet {
-	
+	private static final long serialVersionUID = 1L;
 	private int pageIterator = 0;
 	private int pageSize = 20;
-	private int maxPage = 0;
+	private double maxPage = 0.00;
 	private int NbRowComputer = 0;
-	
+
 	private static final String DASHBOARD = "/WEB-INF/views/dashboard.jsp";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		
+
 		List<Computer> computerList = new ArrayList<>();
 		List<ComputerDTO> computerDTOList = new ArrayList<>();
-		
-		
+
 		NbRowComputer = ComputerDAOService.getInstance().getNbRows();
 
-		//TODO REVOIR CE PASSAGE POUR ARRONDIR LE NOMBRE
-		maxPage = NbRowComputer / pageSize;
-		
+		maxPage = Math.ceil(NbRowComputer / pageSize);
+
 		if (request.getParameter("taillePage") != null) {
 			pageSize = Integer.parseInt(request.getParameter("taillePage"));
 		}
@@ -71,13 +67,12 @@ public class DashBoardServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	
+
 	private List<Computer> paginate(HttpServletRequest request) {
 		List<Computer> computerList = new ArrayList<>();
-	
-		
+
 		return computerList;
-		
+
 	}
 
 }

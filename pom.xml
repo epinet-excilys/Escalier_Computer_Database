@@ -11,8 +11,6 @@
 	<packaging>war</packaging>
 
 	<name>computer_database</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,18 +22,17 @@
 		<mockito-version>2.10.0</mockito-version>
 		<junit-version>4.11</junit-version>
 		<h2-version>1.4.195</h2-version>
-		<servlet-api-version>4.0.0-b06</servlet-api-version>
+		<servlet-api-version>4.0.0</servlet-api-version>
 		<jstl-version>1.2</jstl-version>
+		<org-apache-taglibs>1.2.5</org-apache-taglibs>
 	</properties>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
@@ -54,7 +51,6 @@
 			<version>${h2-version}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -68,13 +64,12 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>${servlet-api-version}</version>		
+			<version>${servlet-api-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl-version}</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
