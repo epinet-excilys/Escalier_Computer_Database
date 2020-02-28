@@ -75,7 +75,7 @@ public class AddComputerServlet extends HttpServlet {
 //			
 //					
 //					
-//			computerDAOService.add(computer);
+			System.out.println(computer);
 //			
 //		}
 
